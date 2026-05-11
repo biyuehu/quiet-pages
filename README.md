@@ -14,7 +14,7 @@
 writing-vault/
  ├─ journal/        ← 记录、日记
  ├─ fiction/        ← 小说创作
- ├─ essays/         ← 随笔（读书/玩游戏的感想）
+ ├─ essays/         ← 随笔（读书/玩游戏的感想，过程性）
  ├─ summaries/      ← 总结
  ├─ tech/           ← 技术文章、学习总结
  ├─ notes/          ← 笔记（读书笔记、课堂笔记）
@@ -23,3 +23,7 @@ writing-vault/
  └─ lexicon/        ← 词库（Various Complements 用）
 
 ```
+## todo
+合并现有的过程性感想记录essays到notes 或者与学术性的notes区分但别叫essays吧？
+
+乐理、语言学知识整理
