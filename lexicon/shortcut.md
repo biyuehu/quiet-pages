@@ -118,7 +118,7 @@ expression,表达式
 
 even,偶数
 
-assert/assertion,异常    
+assert/assertion,异常
 
 factorial,阶乘
 
@@ -176,7 +176,7 @@ machine(0, machine.Pin.IN),创建输入引脚,
 
 p#.on(),阵脚开,
 
-p#.off(),阵脚关, 
+p#.off(),阵脚关,
 
 from machine import Pin, PWM\n,使用 pwm 模块,
 
