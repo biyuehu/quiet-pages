@@ -1,0 +1,10 @@
+{
+	"name": "quiet-pages",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Quiet Pages Markdown Vault",
+	"scripts": {
+		"lint": "npx markdownlint \"**/*.md\"",
+		"lint:fix": "npx markdownlint \"**/*.md\" --fix"
+	}
+}
