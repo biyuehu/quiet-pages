@@ -4,7 +4,7 @@
 	"private": true,
 	"description": "Quiet Pages Markdown Vault",
 	"scripts": {
-		"lint": "npx markdownlint \"**/*.md\"",
-		"lint:fix": "npx markdownlint \"**/*.md\" --fix"
+		"lint": "npx markdownlint-cli \"**/*.md\"",
+		"lint:fix": "npx markdownlint-cli \"**/*.md\" --fix"
 	}
 }

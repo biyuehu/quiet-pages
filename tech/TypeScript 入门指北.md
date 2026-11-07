@@ -45,7 +45,7 @@ function add(x: number, y: number): number {
 
 const abs = (x: number): number => {
    if (x > 0) {
-      return x 
+      return x
    }
    return -x
 }
