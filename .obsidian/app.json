@@ -3,5 +3,8 @@
   "newLinkFormat": "relative",
   "newFileLocation": "root",
   "attachmentFolderPath": "/",
-  "useMarkdownLinks": true
+  "useMarkdownLinks": true,
+  "userIgnoreFilters": [
+    "node_modules/"
+  ]
 }

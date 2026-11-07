@@ -22,20 +22,6 @@
             }
           },
           {
-            "id": "d7595693ec940082",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "reviews/跨越千年、超脱遗忘传达的爱意——《夏末盛开的花》.md",
-                "mode": "source",
-                "source": true
-              },
-              "icon": "lucide-file",
-              "title": "跨越千年、超脱遗忘传达的爱意——《夏末盛开的花》"
-            }
-          },
-          {
             "id": "d4cc9c871e45bfdb",
             "type": "leaf",
             "state": {
@@ -70,7 +56,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "文件列表"
@@ -184,8 +172,8 @@
             "state": {
               "type": "SC-custom-variables-view",
               "state": {},
-              "icon": "code-glyph",
-              "title": "Shell commands: Custom variables"
+              "icon": "lucide-ghost",
+              "title": "SC-custom-variables-view"
             }
           },
           {
@@ -194,8 +182,8 @@
             "state": {
               "type": "git-view",
               "state": {},
-              "icon": "git-pull-request",
-              "title": "Source Control"
+              "icon": "lucide-ghost",
+              "title": "git-view"
             }
           }
         ],
@@ -216,28 +204,29 @@
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
       "obsidian-git:Open Git source control": false,
-      "obsidian-shellcommands:Shell commands: Custom variables": true,
+      "obsidian-shellcommands:Shell commands: Custom variables": false,
       "templater-obsidian:Templater": false
     }
   },
-  "active": "bd34483158e20832",
+  "active": "d4cc9c871e45bfdb",
   "lastOpenFiles": [
-    "essays/夏末盛开的花随笔/夏末盛开的花随笔.md",
-    "reviews/跨越千年、超脱遗忘传达的爱意——《夏末盛开的花》.md",
+    "essays/恋彼女随笔/恋彼女随笔.md",
+    "essays/恋彼女随笔/assets/IMG-20260729223829033.png",
+    "essays/恋彼女随笔/assets/IMG-20260729221843161.png",
+    "essays/恋彼女随笔/assets/IMG-20260729221007520.png",
     "notes/《抒情歌》川端康成.md",
+    "essays/夏末盛开的花随笔/夏末盛开的花随笔.md",
+    "essays/爱因斯坦携爱敬上随笔/爱因斯坦携爱敬上随笔.md",
+    "notes/knowledge.md",
+    "essays/恋彼女随笔/assets/IMG-20260705001723.png",
+    "essays/恋彼女随笔/assets/IMG-20260705115535.png",
+    "essays/恋彼女随笔/assets/IMG-20260705001718146.png",
+    "essays/恋彼女随笔/assets",
+    "reviews/跨越千年、超脱遗忘传达的爱意——《夏末盛开的花》.md",
+    "essays/恋彼女随笔",
     "reviews/2025年度读书短评.md",
     "reviews/电气马戏团 书评.md",
     "reviews/爱因斯坦携爱敬上解读/爱因斯坦携爱敬上解读.md",
-    "essays/夏末盛开的花随笔/assets/2a2bc2f2e1103c9ec6db8ac4c6d0be6e.png",
-    "essays/夏末盛开的花随笔/assets/476ca406cbcaddd897b70dfb02b3a891.png",
-    "essays/夏末盛开的花随笔/assets/11fa8a82b69cfb7a6983f18a22e45963.png",
-    "essays/夏末盛开的花随笔/assets/4683a50a673ce1ce6f366ac10ccfb49d.png",
-    "essays/夏末盛开的花随笔/assets/5f979cbb0b5aa9345ca7700c51587f1d.png",
-    "essays/夏末盛开的花随笔/assets/bdd204dce9ef6e1d821b01fa11d708bd.png",
-    "essays/夏末盛开的花随笔/assets/232ad23072b000b414443d01ed471d9e.png",
-    "essays/夏末盛开的花随笔/assets/62bc2c8ed446e0d1cfb5557f12b1593f.png",
-    "essays/夏末盛开的花随笔/assets/IMG-20260221155443816.png",
-    "essays/夏末盛开的花随笔/assets/e162ed7d376126224f37297a9fbe050d.png",
     "essays/夏末盛开的花随笔/assets",
     "essays/夏末盛开的花随笔",
     "essays/未命名.md",
@@ -257,18 +246,12 @@
     "新建 文本文档.txt",
     "欢迎.md",
     "fiction/雨",
-    "fiction",
-    "essays/爱因斯坦携爱敬上随笔/爱因斯坦携爱敬上随笔.md",
     "lexicon/chinese.md",
     "lexicon/shortcut.md",
-    "cedict_ts.u8",
     "未命名.md",
     "misc/模板/工作记录/每周查验.md",
     "misc/模板/工作记录/每日.md",
     "2.补充/字典/英文词条(1).md",
-    "2.补充/字典/中文字典(1).md",
-    "2.补充/字典/英文词条.md",
-    "misc/模板/01日记.md",
     "未命名 2.canvas",
     "未命名 1.canvas"
   ]
