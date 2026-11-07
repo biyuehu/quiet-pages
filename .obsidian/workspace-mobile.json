@@ -13,18 +13,14 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "reviews/反叛系统性压迫的伟大至爱――《天气之子》文学批评.md",
+                "file": "reviews/《死体泥棒（窃尸贼）》简评.md",
                 "mode": "source",
                 "source": true
-              }
+              },
+              "icon": "lucide-file",
+              "title": "《死体泥棒（窃尸贼）》简评"
             }
-          }
-        ]
-      },
-      {
-        "id": "1dc645cb335f8bcb",
-        "type": "tabs",
-        "children": [
+          },
           {
             "id": "75b4d997847aaf42",
             "type": "leaf",
@@ -34,7 +30,9 @@
                 "file": "reviews/跨越千年、超脱遗忘传达的爱意——《夏末盛开的花》.md",
                 "mode": "source",
                 "source": false
-              }
+              },
+              "icon": "lucide-file",
+              "title": "跨越千年、超脱遗忘传达的爱意——《夏末盛开的花》"
             }
           }
         ]
@@ -52,8 +50,13 @@
         "state": {
           "type": "file-explorer",
           "state": {
-            "sortOrder": "alphabetical"
-          }
+            "sortOrder": "alphabetical",
+            "autoReveal": false,
+            "showSearch": false,
+            "searchQuery": ""
+          },
+          "icon": "lucide-folder-closed",
+          "title": "文件列表"
         }
       },
       {
@@ -68,7 +71,9 @@
             "collapseAll": false,
             "extraContext": false,
             "sortOrder": "alphabetical"
-          }
+          },
+          "icon": "lucide-search",
+          "title": "搜索"
         }
       },
       {
@@ -78,8 +83,12 @@
           "type": "tag",
           "state": {
             "sortOrder": "frequency",
-            "useHierarchy": true
-          }
+            "useHierarchy": true,
+            "showSearch": false,
+            "searchQuery": ""
+          },
+          "icon": "lucide-tags",
+          "title": "标签"
         }
       },
       {
@@ -87,7 +96,9 @@
         "type": "leaf",
         "state": {
           "type": "bookmarks",
-          "state": {}
+          "state": {},
+          "icon": "lucide-bookmark",
+          "title": "书签"
         }
       }
     ],
@@ -103,7 +114,7 @@
         "state": {
           "type": "backlink",
           "state": {
-            "file": "reviews/反叛系统性压迫的伟大至爱――《天气之子》文学批评.md",
+            "file": "reviews/反叛系统性压迫的伟大至爱和后世俗时代的神圣――《天气之子》文学批评.md",
             "collapseAll": false,
             "extraContext": false,
             "sortOrder": "alphabetical",
@@ -111,7 +122,9 @@
             "searchQuery": "",
             "backlinkCollapsed": false,
             "unlinkedCollapsed": true
-          }
+          },
+          "icon": "links-coming-in",
+          "title": "反向链接"
         }
       },
       {
@@ -123,7 +136,9 @@
             "file": "reviews/反叛系统性压迫的伟大至爱――《天气之子》文学批评.md",
             "linksCollapsed": false,
             "unlinkedCollapsed": true
-          }
+          },
+          "icon": "links-going-out",
+          "title": "出链"
         }
       },
       {
@@ -132,8 +147,13 @@
         "state": {
           "type": "outline",
           "state": {
-            "file": "reviews/反叛系统性压迫的伟大至爱――《天气之子》文学批评.md"
-          }
+            "file": "reviews/反叛系统性压迫的伟大至爱――《天气之子》文学批评.md",
+            "followCursor": false,
+            "showSearch": false,
+            "searchQuery": ""
+          },
+          "icon": "lucide-list",
+          "title": "大纲"
         }
       }
     ],
@@ -141,35 +161,41 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "obsidian-git:Open Git source control": false,
+      "templater-obsidian:Templater": false,
+      "bases:新建数据库": false,
       "switcher:打开快速切换": false,
       "graph:查看关系图谱": false,
       "canvas:新建白板": false,
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
-      "command-palette:打开命令面板": false,
-      "obsidian-git:Open Git source control": false
+      "command-palette:打开命令面板": false
     }
   },
   "active": "d9399b21ee3d61e7",
   "lastOpenFiles": [
-    "fiction/止于未止/1.md",
-    "reviews/反叛系统性压迫的伟大至爱――《天气之子》文学批评.md",
-    "README.md",
-    "notes/knowledge.md",
-    "notes/《抒情歌》川端康成.md",
+    "reviews/反叛系统性压迫的伟大至爱和后世俗时代的神圣――《天气之子》文学批评.md",
     "fiction/雨/序幕.md",
+    "notes/《抒情歌》川端康成.md",
+    "notes/knowledge.md",
+    "reviews/2025年度读书短评.md",
+    "reviews/电气马戏团 书评.md",
+    "reviews/跨越千年、超脱遗忘传达的爱意——《夏末盛开的花》.md",
+    "tech/TypeScript 入门指北.md",
+    "reviews/《死体泥棒（窃尸贼）》简评.md",
+    "fiction/止于未止/1.md",
+    "fiction/雨/claude 女主超越性.md",
+    "essays/爱因斯坦携爱敬上随笔/爱因斯坦携爱敬上随笔.md",
+    "README.md",
     "reviews/爱因斯坦携爱敬上解读/claude0.md",
     "reviews/爱因斯坦携爱敬上解读/claude 指导.md",
     "reviews/爱因斯坦携爱敬上解读/claude.md",
     "reviews/爱因斯坦携爱敬上解读/爱因斯坦携爱敬上解读.md",
     "reviews/爱因斯坦携爱敬上解读/草稿.md",
-    "essays/爱因斯坦携爱敬上随笔/爱因斯坦携爱敬上随笔.md",
     "fiction/止于未止",
-    "reviews/跨越千年、超脱遗忘传达的爱意——《夏末盛开的花》.md",
     "[.md",
     "essays/夏末盛开的花随笔/夏末盛开的花随笔.md",
     "essays/爱因斯坦携爱敬上随笔/claude.md",
-    "reviews/电气马戏团 书评.md",
     "欢迎.md"
   ]
 }
