@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "essays/夏末盛开的花随笔/夏末盛开的花随笔.md",
+                "file": "journal/夏末盛开的花随笔/夏末盛开的花随笔.md",
                 "mode": "source",
                 "source": false
               },
@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "notes/《抒情歌》川端康成.md",
+                "file": "notes/《抒情歌》川端康�?md",
                 "mode": "source",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "《抒情歌》川端康成"
+              "title": "《抒情歌》川端康�?
             }
           }
         ],
@@ -157,13 +157,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "essays/爱因斯坦携爱敬上随笔/爱因斯坦携爱敬上随笔.md",
+                "file": "journal/爱因斯坦携爱敬上随笔/爱因斯坦携爱敬上随笔.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "爱因斯坦携爱敬上随笔 的大纲"
+              "title": "爱因斯坦携爱敬上随笔 的大�?
             }
           },
           {
@@ -196,11 +196,11 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "bases:新建数据库": false,
-      "switcher:打开快速切换": false,
+      "bases:新建数据�?: false,
+      "switcher:打开快速切�?: false,
       "graph:查看关系图谱": false,
       "canvas:新建白板": false,
-      "daily-notes:打开/创建今天的日记": true,
+      "daily-notes:打开/创建今天的日�?: true,
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
       "obsidian-git:Open Git source control": false,
@@ -210,49 +210,49 @@
   },
   "active": "d4cc9c871e45bfdb",
   "lastOpenFiles": [
-    "essays/恋彼女随笔/恋彼女随笔.md",
-    "essays/恋彼女随笔/assets/IMG-20260729223829033.png",
-    "essays/恋彼女随笔/assets/IMG-20260729221843161.png",
-    "essays/恋彼女随笔/assets/IMG-20260729221007520.png",
-    "notes/《抒情歌》川端康成.md",
-    "essays/夏末盛开的花随笔/夏末盛开的花随笔.md",
-    "essays/爱因斯坦携爱敬上随笔/爱因斯坦携爱敬上随笔.md",
+    "journal/恋彼女随�?恋彼女随�?md",
+    "journal/恋彼女随�?assets/IMG-20260729223829033.png",
+    "journal/恋彼女随�?assets/IMG-20260729221843161.png",
+    "journal/恋彼女随�?assets/IMG-20260729221007520.png",
+    "notes/《抒情歌》川端康�?md",
+    "journal/夏末盛开的花随笔/夏末盛开的花随笔.md",
+    "journal/爱因斯坦携爱敬上随笔/爱因斯坦携爱敬上随笔.md",
     "notes/knowledge.md",
-    "essays/恋彼女随笔/assets/IMG-20260705001723.png",
-    "essays/恋彼女随笔/assets/IMG-20260705115535.png",
-    "essays/恋彼女随笔/assets/IMG-20260705001718146.png",
-    "essays/恋彼女随笔/assets",
-    "reviews/跨越千年、超脱遗忘传达的爱意——《夏末盛开的花》.md",
-    "essays/恋彼女随笔",
-    "reviews/2025年度读书短评.md",
-    "reviews/电气马戏团 书评.md",
-    "reviews/爱因斯坦携爱敬上解读/爱因斯坦携爱敬上解读.md",
-    "essays/夏末盛开的花随笔/assets",
-    "essays/夏末盛开的花随笔",
-    "essays/未命名.md",
+    "journal/恋彼女随�?assets/IMG-20260705001723.png",
+    "journal/恋彼女随�?assets/IMG-20260705115535.png",
+    "journal/恋彼女随�?assets/IMG-20260705001718146.png",
+    "journal/恋彼女随�?assets",
+    "thoughts/跨越千年、超脱遗忘传达的爱意——《夏末盛开的花�?md",
+    "journal/恋彼女随�?,
+    "thoughts/2025年度读书短评.md",
+    "thoughts/电气马戏�?书评.md",
+    "thoughts/爱因斯坦携爱敬上解读/爱因斯坦携爱敬上解读.md",
+    "journal/夏末盛开的花随笔/assets",
+    "journal/夏末盛开的花随笔",
+    "journal/未命�?md",
     "README.md",
     "notes",
-    "未命名.canvas",
+    "未命�?canvas",
     "tech/TypeScript 入门指北.md",
     "tech",
-    "reviews/爱因斯坦携爱敬上解读/草稿.md",
-    "reviews/爱因斯坦携爱敬上解读/claude0.md",
-    "reviews/爱因斯坦携爱敬上解读/claude.md",
-    "reviews/爱因斯坦携爱敬上解读/claude 指导.md",
-    "reviews/爱因斯坦携爱敬上解读",
-    "reviews",
-    "fiction/雨/claude 女主超越性.md",
-    "fiction/雨/序幕.md",
+    "thoughts/爱因斯坦携爱敬上解读/草稿.md",
+    "thoughts/爱因斯坦携爱敬上解读/claude0.md",
+    "thoughts/爱因斯坦携爱敬上解读/claude.md",
+    "thoughts/爱因斯坦携爱敬上解读/claude 指导.md",
+    "thoughts/爱因斯坦携爱敬上解读",
+    "thoughts",
+    "fiction/�?claude 女主超越�?md",
+    "fiction/�?序幕.md",
     "新建 文本文档.txt",
     "欢迎.md",
-    "fiction/雨",
+    "fiction/�?,
     "lexicon/chinese.md",
     "lexicon/shortcut.md",
-    "未命名.md",
+    "未命�?md",
     "misc/模板/工作记录/每周查验.md",
     "misc/模板/工作记录/每日.md",
     "2.补充/字典/英文词条(1).md",
-    "未命名 2.canvas",
-    "未命名 1.canvas"
+    "未命�?2.canvas",
+    "未命�?1.canvas"
   ]
 }

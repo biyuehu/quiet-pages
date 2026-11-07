@@ -12,20 +12,18 @@
 
 ```
 writing-vault/
- ├─ journal/        ← 记录、日记
+ ├─ journal/        ← 游玩/阅读过程性记录、日记
+ ├─ thoughts/       ← 作品感想、评价、批评
+ ├─ essays/         ← 独立的个人哲思、意识流、散文随笔
  ├─ fiction/        ← 小说创作
- ├─ essays/         ← 随笔（读书/玩游戏的感想，过程性）
  ├─ summaries/      ← 总结
  ├─ tech/           ← 技术文章、学习总结
  ├─ notes/          ← 笔记（读书笔记、课堂笔记）
- ├─ reviews/        ← 书评、观影感想
  ├─ misc/           ← 难以分类的杂项
  └─ lexicon/        ← 词库（Various Complements 用）
 
 ```
 
 ## todo
-
-合并现有的过程性感想记录essays到notes 或者与学术性的notes区分但别叫essays吧？
 
 乐理、语言学知识整理

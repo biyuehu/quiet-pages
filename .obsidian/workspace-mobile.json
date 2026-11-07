@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "reviews/《死体泥棒（窃尸贼）》简评.md",
+                "file": "thoughts/《死体泥棒（窃尸贼）》简�?md",
                 "mode": "source",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "《死体泥棒（窃尸贼）》简评"
+              "title": "《死体泥棒（窃尸贼）》简�?
             }
           },
           {
@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "reviews/跨越千年、超脱遗忘传达的爱意——《夏末盛开的花》.md",
+                "file": "thoughts/跨越千年、超脱遗忘传达的爱意——《夏末盛开的花�?md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "跨越千年、超脱遗忘传达的爱意——《夏末盛开的花》"
+              "title": "跨越千年、超脱遗忘传达的爱意——《夏末盛开的花�?
             }
           }
         ]
@@ -114,7 +114,7 @@
         "state": {
           "type": "backlink",
           "state": {
-            "file": "reviews/反叛系统性压迫的伟大至爱和后世俗时代的神圣――《天气之子》文学批评.md",
+            "file": "thoughts/反叛系统性压迫的伟大至爱和后世俗时代的神圣――《天气之子》文学批�?md",
             "collapseAll": false,
             "extraContext": false,
             "sortOrder": "alphabetical",
@@ -133,7 +133,7 @@
         "state": {
           "type": "outgoing-link",
           "state": {
-            "file": "reviews/反叛系统性压迫的伟大至爱――《天气之子》文学批评.md",
+            "file": "thoughts/反叛系统性压迫的伟大至爱――《天气之子》文学批�?md",
             "linksCollapsed": false,
             "unlinkedCollapsed": true
           },
@@ -147,7 +147,7 @@
         "state": {
           "type": "outline",
           "state": {
-            "file": "reviews/反叛系统性压迫的伟大至爱――《天气之子》文学批评.md",
+            "file": "thoughts/反叛系统性压迫的伟大至爱――《天气之子》文学批�?md",
             "followCursor": false,
             "showSearch": false,
             "searchQuery": ""
@@ -163,39 +163,39 @@
     "hiddenItems": {
       "obsidian-git:Open Git source control": false,
       "templater-obsidian:Templater": false,
-      "bases:新建数据库": false,
-      "switcher:打开快速切换": false,
+      "bases:新建数据�?: false,
+      "switcher:打开快速切�?: false,
       "graph:查看关系图谱": false,
       "canvas:新建白板": false,
-      "daily-notes:打开/创建今天的日记": false,
+      "daily-notes:打开/创建今天的日�?: false,
       "templates:插入模板": false,
       "command-palette:打开命令面板": false
     }
   },
   "active": "d9399b21ee3d61e7",
   "lastOpenFiles": [
-    "reviews/反叛系统性压迫的伟大至爱和后世俗时代的神圣――《天气之子》文学批评.md",
-    "fiction/雨/序幕.md",
-    "notes/《抒情歌》川端康成.md",
+    "thoughts/反叛系统性压迫的伟大至爱和后世俗时代的神圣――《天气之子》文学批�?md",
+    "fiction/�?序幕.md",
+    "notes/《抒情歌》川端康�?md",
     "notes/knowledge.md",
-    "reviews/2025年度读书短评.md",
-    "reviews/电气马戏团 书评.md",
-    "reviews/跨越千年、超脱遗忘传达的爱意——《夏末盛开的花》.md",
+    "thoughts/2025年度读书短评.md",
+    "thoughts/电气马戏�?书评.md",
+    "thoughts/跨越千年、超脱遗忘传达的爱意——《夏末盛开的花�?md",
     "tech/TypeScript 入门指北.md",
-    "reviews/《死体泥棒（窃尸贼）》简评.md",
+    "thoughts/《死体泥棒（窃尸贼）》简�?md",
     "fiction/止于未止/1.md",
-    "fiction/雨/claude 女主超越性.md",
-    "essays/爱因斯坦携爱敬上随笔/爱因斯坦携爱敬上随笔.md",
+    "fiction/�?claude 女主超越�?md",
+    "journal/爱因斯坦携爱敬上随笔/爱因斯坦携爱敬上随笔.md",
     "README.md",
-    "reviews/爱因斯坦携爱敬上解读/claude0.md",
-    "reviews/爱因斯坦携爱敬上解读/claude 指导.md",
-    "reviews/爱因斯坦携爱敬上解读/claude.md",
-    "reviews/爱因斯坦携爱敬上解读/爱因斯坦携爱敬上解读.md",
-    "reviews/爱因斯坦携爱敬上解读/草稿.md",
+    "thoughts/爱因斯坦携爱敬上解读/claude0.md",
+    "thoughts/爱因斯坦携爱敬上解读/claude 指导.md",
+    "thoughts/爱因斯坦携爱敬上解读/claude.md",
+    "thoughts/爱因斯坦携爱敬上解读/爱因斯坦携爱敬上解读.md",
+    "thoughts/爱因斯坦携爱敬上解读/草稿.md",
     "fiction/止于未止",
     "[.md",
-    "essays/夏末盛开的花随笔/夏末盛开的花随笔.md",
-    "essays/爱因斯坦携爱敬上随笔/claude.md",
+    "journal/夏末盛开的花随笔/夏末盛开的花随笔.md",
+    "journal/爱因斯坦携爱敬上随笔/claude.md",
     "欢迎.md"
   ]
 }
