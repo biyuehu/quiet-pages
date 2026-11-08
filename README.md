@@ -18,7 +18,7 @@ writing-vault/
  ├─ fiction/        ← 小说创作
  ├─ summaries/      ← 总结
  ├─ tech/           ← 技术文章、学习总结
- ├─ notes/          ← 笔记（读书笔记、课堂笔记）
+ ├─ notes/          ← 笔记（读书笔记、知识笔记、课堂笔记）
  ├─ misc/           ← 难以分类的杂项
  └─ lexicon/        ← 词库（Various Complements 用）
 
