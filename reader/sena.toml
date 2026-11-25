@@ -1,0 +1,24 @@
+title = "Lost Poem"
+description = "Lost Poem 静态电子书阅读器"
+keywords = "Lost Poem,小说,电子书阅读器"
+authors = ["Quiet Pages"]
+language = "zh"
+languages = ["zh"]
+src = "./content"
+dest = "./dist"
+base-url = "/"
+sitemap-enabled = false
+feed-enabled = false
+
+[features]
+highlight-enabled = false
+mathjax-enabled = false
+
+[extensions]
+template = "templates/default.html"
+assets = [
+  "styles/**/*",
+  "scripts/**/*",
+]
+preprocessors = []
+transformers = []

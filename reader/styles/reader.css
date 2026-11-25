@@ -748,3 +748,6 @@ mark.hl.has-note {
 		display: none;
 	}
 }
+
+a.toc-item { text-decoration: none; }
+

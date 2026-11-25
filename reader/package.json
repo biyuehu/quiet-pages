@@ -1,14 +1,12 @@
 {
 	"name": "lost-poem-reader",
-	"version": "1.0.0",
+	"version": "2.0.0",
 	"private": true,
 	"type": "module",
-	"description": "Non-intrusive static e-book reader for lost-poem",
+	"description": "MoPress Book mode e-book reader for lost-poem",
 	"scripts": {
-		"build": "node build.mjs",
-		"dev": "node build.mjs --serve"
-	},
-	"dependencies": {
-		"marked": "^15.0.0"
+		"prepare:book": "node prepare.mjs",
+		"build": "node prepare.mjs && mopress build",
+		"dev": "node prepare.mjs && mopress serve"
 	}
 }

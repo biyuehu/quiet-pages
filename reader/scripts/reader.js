@@ -18,8 +18,6 @@ const DEFAULT_STATE = {
 };
 
 const state = loadState();
-let manifest = null;
-let currentChapter = null;
 let currentPage = 0;
 let totalPages = 1;
 let colStride = 680;
@@ -28,10 +26,21 @@ let activeHighlightId = null;
 let touchStartX = null;
 let touchStartY = null;
 
+const metaEl = document.getElementById('mopress-meta');
+const pageMeta = {
+	bookTitle: metaEl?.dataset.bookTitle || 'Lost Poem',
+	chapterTitle: metaEl?.dataset.chapterTitle || 'Lost Poem',
+	currentUrl: metaEl?.dataset.current || location.pathname,
+	prevUrl: metaEl?.dataset.prev || '',
+	nextUrl: metaEl?.dataset.next || ''
+};
+
+// Derive stable chapter ID from current page path (e.g. "/A0.html" -> "A0")
+const currentChapterId = deriveChapterId(pageMeta.currentUrl);
+
 const el = {
 	topBar: document.getElementById('top-bar'),
 	bottomBar: document.getElementById('bottom-bar'),
-	headerChapter: document.getElementById('header-chapter'),
 	stage: document.getElementById('reader-stage'),
 	viewport: document.getElementById('reader-viewport'),
 	columns: document.getElementById('reader-columns'),
@@ -48,14 +57,18 @@ const el = {
 	popoverTextarea: document.getElementById('popover-textarea'),
 	backdrop: document.getElementById('drawer-backdrop'),
 	tocDrawer: document.getElementById('toc-drawer'),
-	tocList: document.getElementById('toc-list'),
-	tocMeta: document.getElementById('toc-meta'),
 	notesDrawer: document.getElementById('notes-drawer'),
 	notesList: document.getElementById('notes-list'),
 	notesBadge: document.getElementById('notes-badge'),
 	settingsDrawer: document.getElementById('settings-drawer'),
 	toast: document.getElementById('toast')
 };
+
+function deriveChapterId(urlPath) {
+	const clean = (urlPath || '').split(/[?#]/)[0];
+	const name = clean.split('/').pop() || 'index.html';
+	return name.replace(/\.html$/i, '') || 'index';
+}
 
 function loadState() {
 	try {
@@ -129,7 +142,6 @@ function recalcLayout(preserveRatio = true) {
 	document.documentElement.style.setProperty('--col-gap', `${gap}px`);
 	colStride = viewportWidth + gap;
 
-	// Force reflow before reading scrollWidth
 	void el.columns.offsetWidth;
 	const scrollW = el.columns.scrollWidth;
 	totalPages = Math.max(1, Math.round((scrollW + gap) / colStride));
@@ -149,6 +161,8 @@ function renderPagePosition() {
 		el.pageIndicator.textContent = `${currentPage + 1} / ${totalPages}`;
 		el.pageSlider.max = String(totalPages);
 		el.pageSlider.value = String(currentPage + 1);
+		state.progress.chapterId = currentChapterId;
+		state.progress.chapterUrl = pageMeta.currentUrl;
 		state.progress.pageRatio = totalPages > 1 ? currentPage / (totalPages - 1) : 0;
 		saveState();
 	}
@@ -161,79 +175,34 @@ function updateScrollIndicator() {
 	el.pageIndicator.textContent = `${pct}%`;
 	el.pageSlider.max = '100';
 	el.pageSlider.value = String(pct);
+	state.progress.chapterId = currentChapterId;
+	state.progress.chapterUrl = pageMeta.currentUrl;
 	state.progress.scrollRatio = ratio;
 	saveState();
 }
 
-async function loadChapter(chapterId, targetLocation = { type: 'start' }) {
-	const meta = manifest.chapters.find((c) => c.id === chapterId) || manifest.chapters[0];
-	if (!meta) return;
-
-	const res = await fetch(`data/chapters/${encodeURIComponent(meta.id)}.json`);
-	const chapter = await res.json();
-	currentChapter = chapter;
-	state.progress.chapterId = chapter.id;
-	saveState();
-
-	el.headerChapter.textContent = `${manifest.bookTitle} · ${chapter.title}`;
-	el.content.innerHTML = `<h1 class="chapter-title">${escapeHtml(chapter.title)}</h1>${chapter.html}<p class="chapter-end-mark">— ${escapeHtml(chapter.title)} 终 —</p>`;
-
-	indexBlocks();
-	applyChapterHighlights();
-	updateChapterButtons();
-	renderToc();
-
-	if (state.settings.mode === 'paginated') {
-		currentPage = 0;
-		recalcLayout(false);
-		if (targetLocation.type === 'end') {
-			currentPage = totalPages - 1;
-			renderPagePosition();
-		} else if (targetLocation.type === 'ratio') {
-			currentPage = Math.min(totalPages - 1, Math.round((targetLocation.value || 0) * (totalPages - 1)));
-			renderPagePosition();
-		} else if (targetLocation.type === 'highlight') {
-			jumpToHighlightInDom(targetLocation.id);
-		}
-	} else {
-		if (targetLocation.type === 'highlight') {
-			jumpToHighlightInDom(targetLocation.id);
-		} else if (targetLocation.type === 'ratio') {
-			const maxScroll = Math.max(0, el.stage.scrollHeight - el.stage.clientHeight);
-			el.stage.scrollTop = maxScroll * (targetLocation.value || 0);
-		} else {
-			el.stage.scrollTop = 0;
-		}
-		updateScrollIndicator();
-	}
+function navigateTo(url, hash = '') {
+	if (!url) return;
+	window.location.href = hash ? `${url}#${hash}` : url;
 }
 
-function updateChapterButtons() {
-	if (!manifest || !currentChapter) return;
-	const idx = currentChapter.index;
-	el.btnPrevChap.disabled = idx <= 0;
-	el.btnNextChap.disabled = idx >= manifest.chapters.length - 1;
-}
-
-async function nextPage() {
+function nextPage() {
 	if (state.settings.mode !== 'paginated') return;
 	if (currentPage < totalPages - 1) {
 		currentPage++;
 		renderPagePosition();
-	} else if (currentChapter && currentChapter.index < manifest.chapters.length - 1) {
-		const nextChap = manifest.chapters[currentChapter.index + 1];
-		await loadChapter(nextChap.id, { type: 'start' });
+	} else if (pageMeta.nextUrl) {
+		navigateTo(pageMeta.nextUrl);
 	}
 }
 
-async function prevPage() {
+function prevPage() {
 	if (state.settings.mode !== 'paginated') return;
 	if (currentPage > 0) {
 		currentPage--;
 		renderPagePosition();
-	} else if (currentChapter && currentChapter.index > 0) {
-		const prevChap = manifest.chapters[currentChapter.index - 1];
-		await loadChapter(prevChap.id, { type: 'end' });
+	} else if (pageMeta.prevUrl) {
+		navigateTo(pageMeta.prevUrl, 'end');
 	}
 }
 
@@ -299,7 +268,6 @@ function wrapRangeInBlock(blockEl, startOff, endOff, hl) {
 		cursor = nodeEnd;
 
 		if (nodeEnd <= startOff || nodeStart >= endOff) continue;
-		// Skip already highlighted text nodes to avoid nested mark issues
 		if (node.parentElement?.closest('mark.hl')) continue;
 
 		const localStart = Math.max(0, startOff - nodeStart);
@@ -325,8 +293,6 @@ function wrapRangeInBlock(blockEl, startOff, endOff, hl) {
 }
 
 function applyChapterHighlights() {
-	if (!currentChapter) return;
-	// Unwrap existing marks first
 	el.content.querySelectorAll('mark.hl').forEach((mark) => {
 		const parent = mark.parentNode;
 		while (mark.firstChild) parent.insertBefore(mark.firstChild, mark);
@@ -335,7 +301,7 @@ function applyChapterHighlights() {
 	});
 
 	const blocks = getBlocks();
-	const list = state.highlights.filter((h) => h.chapterId === currentChapter.id);
+	const list = state.highlights.filter((h) => h.chapterId === currentChapterId);
 
 	for (const hl of list) {
 		for (let bIdx = hl.startBlock; bIdx <= hl.endBlock; bIdx++) {
@@ -356,8 +322,7 @@ function jumpToHighlightInDom(hlId) {
 	if (!mark) return;
 	if (state.settings.mode === 'paginated') {
 		const markLeft = mark.getBoundingClientRect().left - el.columns.getBoundingClientRect().left;
-		const targetPage = Math.max(0, Math.min(totalPages - 1, Math.floor(markLeft / colStride)));
-		currentPage = targetPage;
+		currentPage = Math.max(0, Math.min(totalPages - 1, Math.floor(markLeft / colStride)));
 		renderPagePosition();
 	} else {
 		mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -365,14 +330,15 @@ function jumpToHighlightInDom(hlId) {
 }
 
 function createHighlight(color, openNote = false) {
-	if (!pendingRange || !currentChapter) return;
+	if (!pendingRange) return;
 	const serialized = serializeRange(pendingRange);
 	if (!serialized) return;
 
 	const hl = {
 		id: `hl_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
-		chapterId: currentChapter.id,
-		chapterTitle: currentChapter.title,
+		chapterId: currentChapterId,
+		chapterUrl: pageMeta.currentUrl,
+		chapterTitle: pageMeta.chapterTitle,
 		color,
 		note: '',
 		createdAt: new Date().toISOString(),
@@ -436,22 +402,6 @@ function openDrawer(drawerEl) {
 	el.backdrop.classList.remove('hidden');
 }
 
-function renderToc() {
-	if (!manifest) return;
-	el.tocMeta.textContent = `共 ${manifest.chapters.length} 章`;
-	el.tocList.innerHTML = '';
-	for (const chap of manifest.chapters) {
-		const btn = document.createElement('button');
-		btn.className = `toc-item${currentChapter?.id === chap.id ? ' active' : ''}`;
-		btn.innerHTML = `<span>${escapeHtml(chap.title)}</span><span class="toc-chars">${chap.charCount} 字</span>`;
-		btn.addEventListener('click', () => {
-			closeAllDrawers();
-			loadChapter(chap.id, { type: 'start' });
-		});
-		el.tocList.appendChild(btn);
-	}
-}
-
 function updateNotesBadge() {
 	const count = state.highlights.length;
 	el.notesBadge.textContent = String(count);
@@ -477,10 +427,10 @@ function renderNotesDrawer() {
 			<blockquote class="note-card-quote">${escapeHtml(hl.quote)}</blockquote>
 			${hl.note ? `<p class="note-card-body">${escapeHtml(hl.note)}</p>` : ''}
 		`;
-		card.addEventListener('click', async () => {
+		card.addEventListener('click', () => {
 			closeAllDrawers();
-			if (currentChapter?.id !== hl.chapterId) {
-				await loadChapter(hl.chapterId, { type: 'highlight', id: hl.id });
+			if (currentChapterId !== hl.chapterId) {
+				navigateTo(hl.chapterUrl || `${hl.chapterId}.html`, `hl=${hl.id}`);
 			} else {
 				jumpToHighlightInDom(hl.id);
 			}
@@ -509,14 +459,12 @@ function escapeHtml(str) {
 
 /* ---------- Events ---------- */
 function bindEvents() {
-	// Disable default browser context menu inside reading stage
 	el.stage.addEventListener('contextmenu', (e) => {
 		e.preventDefault();
 	});
 
-	// Click zones for page turning & chrome toggle
 	el.stage.addEventListener('click', (e) => {
-		if (e.target.closest('mark.hl') || e.target.closest('.page-arrow')) return;
+		if (e.target.closest('mark.hl') || e.target.closest('.page-arrow') || e.target.closest('a')) return;
 		const sel = window.getSelection();
 		if (sel && sel.toString().trim().length > 0) return;
 
@@ -544,7 +492,6 @@ function bindEvents() {
 		nextPage();
 	});
 
-	// Touch swipe for mobile pagination
 	el.stage.addEventListener('touchstart', (e) => {
 		if (e.touches.length !== 1) return;
 		touchStartX = e.touches[0].clientX;
@@ -568,7 +515,6 @@ function bindEvents() {
 		}
 	}, { passive: true });
 
-	// Selection handling
 	document.addEventListener('mouseup', () => {
 		setTimeout(() => {
 			const sel = window.getSelection();
@@ -607,7 +553,6 @@ function bindEvents() {
 		showToast('已复制');
 	});
 
-	// Click existing highlight
 	el.content.addEventListener('click', (e) => {
 		const mark = e.target.closest('mark.hl');
 		if (!mark) return;
@@ -615,7 +560,6 @@ function bindEvents() {
 		openNotePopover(mark.dataset.hlId, mark);
 	});
 
-	// Note popover actions
 	el.notePopover.querySelectorAll('.hl-dot').forEach((btn) => {
 		btn.addEventListener('click', () => {
 			const hl = state.highlights.find((h) => h.id === activeHighlightId);
@@ -646,33 +590,19 @@ function bindEvents() {
 		closeNotePopover();
 	});
 
-	// Navigation & Drawers
-	document.getElementById('btn-toc').addEventListener('click', () => {
-		renderToc();
-		openDrawer(el.tocDrawer);
-	});
+	document.getElementById('btn-toc').addEventListener('click', () => openDrawer(el.tocDrawer));
 	document.getElementById('btn-notes').addEventListener('click', () => {
 		renderNotesDrawer();
 		openDrawer(el.notesDrawer);
 	});
-	document.getElementById('btn-settings').addEventListener('click', () => {
-		openDrawer(el.settingsDrawer);
-	});
+	document.getElementById('btn-settings').addEventListener('click', () => openDrawer(el.settingsDrawer));
 	el.backdrop.addEventListener('click', closeAllDrawers);
 	document.querySelectorAll('.drawer-close').forEach((btn) => {
 		btn.addEventListener('click', closeAllDrawers);
 	});
 
-	el.btnPrevChap.addEventListener('click', () => {
-		if (currentChapter && currentChapter.index > 0) {
-			loadChapter(manifest.chapters[currentChapter.index - 1].id, { type: 'start' });
-		}
-	});
-	el.btnNextChap.addEventListener('click', () => {
-		if (currentChapter && currentChapter.index < manifest.chapters.length - 1) {
-			loadChapter(manifest.chapters[currentChapter.index + 1].id, { type: 'start' });
-		}
-	});
+	el.btnPrevChap.addEventListener('click', () => navigateTo(pageMeta.prevUrl));
+	el.btnNextChap.addEventListener('click', () => navigateTo(pageMeta.nextUrl));
 
 	el.pageSlider.addEventListener('input', (e) => {
 		const val = Number(e.target.value);
@@ -689,7 +619,6 @@ function bindEvents() {
 		if (state.settings.mode === 'scroll') updateScrollIndicator();
 	});
 
-	// Settings controls
 	document.querySelectorAll('#seg-mode button').forEach((btn) => {
 		btn.addEventListener('click', () => {
 			state.settings.mode = btn.dataset.value;
@@ -733,9 +662,8 @@ function bindEvents() {
 		recalcLayout(true);
 	});
 
-	// Export / Import
 	document.getElementById('btn-export-md').addEventListener('click', () => {
-		let md = `# ${manifest.bookTitle} 划线与笔记\n\n`;
+		let md = `# ${pageMeta.bookTitle} 划线与笔记\n\n`;
 		for (const hl of state.highlights) {
 			md += `## ${hl.chapterTitle || hl.chapterId}\n\n> ${hl.quote}\n\n`;
 			if (hl.note) md += `**笔记**：${hl.note}\n\n`;
@@ -772,7 +700,6 @@ function bindEvents() {
 		e.target.value = '';
 	});
 
-	// Keyboard shortcuts
 	document.addEventListener('keydown', (e) => {
 		if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
 		if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') {
@@ -786,7 +713,6 @@ function bindEvents() {
 				prevPage();
 			}
 		} else if (e.key.toLowerCase() === 'm') {
-			renderToc();
 			openDrawer(el.tocDrawer);
 		} else if (e.key.toLowerCase() === 'n') {
 			renderNotesDrawer();
@@ -805,20 +731,39 @@ function bindEvents() {
 	});
 }
 
-async function init() {
+function init() {
+	// If on index cover page and user has previous progress, auto-resume
+	if (currentChapterId === 'index' && state.progress.chapterUrl && state.progress.chapterId !== 'index') {
+		navigateTo(state.progress.chapterUrl);
+		return;
+	}
+
 	applySettings();
 	updateNotesBadge();
+	indexBlocks();
+	applyChapterHighlights();
 	bindEvents();
 
-	const res = await fetch('data/manifest.json');
-	manifest = await res.json();
-	const startId = state.progress.chapterId || manifest.chapters[0]?.id;
-	const target = state.settings.mode === 'paginated'
-		? { type: 'ratio', value: state.progress.pageRatio || 0 }
-		: { type: 'ratio', value: state.progress.scrollRatio || 0 };
-
-	if (startId) {
-		await loadChapter(startId, target);
+	const hash = location.hash.replace(/^#/, '');
+	if (state.settings.mode === 'paginated') {
+		recalcLayout(false);
+		if (hash === 'end') {
+			currentPage = totalPages - 1;
+			renderPagePosition();
+		} else if (hash.startsWith('hl=')) {
+			jumpToHighlightInDom(hash.slice(3));
+		} else if (state.progress.chapterId === currentChapterId && state.progress.pageRatio > 0) {
+			currentPage = Math.min(totalPages - 1, Math.round(state.progress.pageRatio * (totalPages - 1)));
+			renderPagePosition();
+		}
+	} else {
+		if (hash.startsWith('hl=')) {
+			jumpToHighlightInDom(hash.slice(3));
+		} else if (state.progress.chapterId === currentChapterId && state.progress.scrollRatio > 0) {
+			const maxScroll = Math.max(0, el.stage.scrollHeight - el.stage.clientHeight);
+			el.stage.scrollTop = maxScroll * state.progress.scrollRatio;
+		}
+		updateScrollIndicator();
 	}
 }
 

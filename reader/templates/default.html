@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="$if(language)$$language$$else$$site_language$$endif$">
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-	<title>Lost Poem · 阅读器</title>
-	<link rel="stylesheet" href="styles.css" />
+	<title>$if(title)$$title$ · $site_title$$else$$site_title$$endif$</title>
+	<link rel="stylesheet" href="styles/reader.css" />
 </head>
 <body data-theme="paper" data-mode="paginated">
 	<div id="app">
@@ -17,7 +17,7 @@
 					</svg>
 					<span class="btn-label">目录</span>
 				</button>
-				<span id="header-chapter" class="header-chapter">Lost Poem</span>
+				<span id="header-chapter" class="header-chapter">$site_title$$if(title)$ · $title$$endif$</span>
 			</div>
 			<div class="bar-right">
 				<button id="btn-notes" class="icon-btn" title="划线与笔记 (N)" aria-label="笔记">
@@ -42,24 +42,25 @@
 			<div id="reader-viewport">
 				<div id="reader-columns">
 					<article id="chapter-content" class="chapter-content">
-						<p class="loading-hint">正在载入…</p>
+						<h1 class="chapter-title">$if(title)$$title$$else$$site_title$$endif$</h1>
+						$body$
+						$if(title)$<p class="chapter-end-mark">— $title$ 终 —</p>$endif$
 					</article>
 				</div>
 			</div>
 
-			<!-- Subtle Page Zones Hint (desktop hover arrows) -->
 			<button id="zone-prev" class="page-arrow page-arrow-prev" aria-label="上一页" title="上一页 (←)">‹</button>
 			<button id="zone-next" class="page-arrow page-arrow-next" aria-label="下一页" title="下一页 (→)">›</button>
 		</main>
 
 		<!-- Bottom Chrome -->
 		<footer id="bottom-bar" class="chrome-bar">
-			<button id="btn-prev-chap" class="nav-chap-btn" title="上一章">← 上一章</button>
+			<button id="btn-prev-chap" class="nav-chap-btn" title="上一章" $if(!prev)$disabled$endif$>← 上一章</button>
 			<div class="progress-wrap">
 				<span id="page-indicator" class="page-indicator">1 / 1</span>
 				<input id="page-slider" type="range" min="1" max="1" value="1" aria-label="页码进度" />
 			</div>
-			<button id="btn-next-chap" class="nav-chap-btn" title="下一章">下一章 →</button>
+			<button id="btn-next-chap" class="nav-chap-btn" title="下一章" $if(!next)$disabled$endif$>下一章 →</button>
 		</footer>
 
 		<!-- Selection Floating Toolbar -->
@@ -99,12 +100,20 @@
 		<aside id="toc-drawer" class="drawer drawer-left hidden" aria-label="目录">
 			<div class="drawer-header">
 				<div>
-					<h2 class="drawer-title">Lost Poem</h2>
+					<h2 class="drawer-title">$site_title$</h2>
 					<p id="toc-meta" class="drawer-sub">目录</p>
 				</div>
 				<button class="drawer-close" data-close="toc-drawer" aria-label="关闭">✕</button>
 			</div>
-			<nav id="toc-list" class="drawer-body toc-list"></nav>
+			<nav id="toc-list" class="drawer-body toc-list">
+				$for(section.numbered_chapters)$
+				$if(item.is_link)$
+				<a class="toc-item $if(item.is_current)$active$endif$" href="$item.location$">
+					<span>$item.title$</span>
+				</a>
+				$endif$
+				$endfor$
+			</nav>
 		</aside>
 
 		<!-- Notes & Highlights Drawer -->
@@ -193,6 +202,14 @@
 		<div id="toast" class="toast hidden"></div>
 	</div>
 
-	<script type="module" src="app.js"></script>
+	<div id="mopress-meta" class="hidden"
+		data-book-title="$site_title$"
+		data-chapter-title="$if(title)$$title$$else$$site_title$$endif$"
+		data-current="$current$"
+		data-prev="$if(prev)$$prev.location$$endif$"
+		data-next="$if(next)$$next.location$$endif$">
+	</div>
+
+	<script type="module" src="scripts/reader.js"></script>
 </body>
 </html>
