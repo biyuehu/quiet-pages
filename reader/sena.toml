@@ -19,6 +19,8 @@ template = "templates/default.html"
 assets = [
   "styles/**/*",
   "scripts/**/*",
+  "index.html",
+  "404.html",
 ]
 preprocessors = []
 transformers = []

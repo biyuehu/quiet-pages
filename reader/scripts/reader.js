@@ -36,7 +36,7 @@ const pageMeta = {
 };
 
 // Derive stable chapter ID from current page path (e.g. "/A0.html" -> "A0")
-const currentChapterId = deriveChapterId(pageMeta.currentUrl);
+let currentChapterId = deriveChapterId(pageMeta.currentUrl);
 
 const el = {
 	topBar: document.getElementById('top-bar'),
@@ -181,9 +181,80 @@ function updateScrollIndicator() {
 	saveState();
 }
 
-function navigateTo(url, hash = '') {
-	if (!url) return;
-	window.location.href = hash ? `${url}#${hash}` : url;
+let navInFlight = false;
+
+async function navigateTo(url, hash = '', pushHistory = true) {
+	if (!url || navInFlight) return;
+	const fullUrl = hash ? `${url}#${hash}` : url;
+	// Fall back to full navigation for cover page or external links
+	if (url.includes('index.html') || /^https?:\/\//i.test(url)) {
+		window.location.href = fullUrl;
+		return;
+	}
+
+	navInFlight = true;
+	try {
+		const res = await fetch(url, { credentials: 'same-origin' });
+		if (!res.ok) throw new Error(`HTTP ${res.status}`);
+		const html = await res.text();
+		const doc = new DOMParser().parseFromString(html, 'text/html');
+		const nextContent = doc.getElementById('chapter-content');
+		const nextMeta = doc.getElementById('mopress-meta');
+		if (!nextContent || !nextMeta) throw new Error('Missing reader nodes');
+
+		closeNotePopover();
+		hideSelectionToolbar();
+
+		el.content.innerHTML = nextContent.innerHTML;
+		document.title = doc.title;
+
+		pageMeta.bookTitle = nextMeta.dataset.bookTitle || pageMeta.bookTitle;
+		pageMeta.chapterTitle = nextMeta.dataset.chapterTitle || pageMeta.chapterTitle;
+		pageMeta.currentUrl = nextMeta.dataset.current || url;
+		pageMeta.prevUrl = nextMeta.dataset.prev || '';
+		pageMeta.nextUrl = nextMeta.dataset.next || '';
+		currentChapterId = deriveChapterId(pageMeta.currentUrl);
+
+		const headerChap = document.getElementById('header-chapter');
+		const nextHeader = doc.getElementById('header-chapter');
+		if (headerChap && nextHeader) headerChap.innerHTML = nextHeader.innerHTML;
+
+		const tocList = document.getElementById('toc-list');
+		const nextToc = doc.getElementById('toc-list');
+		if (tocList && nextToc) tocList.innerHTML = nextToc.innerHTML;
+
+		el.btnPrevChap.disabled = !pageMeta.prevUrl;
+		el.btnNextChap.disabled = !pageMeta.nextUrl;
+
+		if (pushHistory) {
+			history.pushState({ url: pageMeta.currentUrl }, '', fullUrl);
+		}
+
+		indexBlocks();
+		applyChapterHighlights();
+
+		if (state.settings.mode === 'paginated') {
+			currentPage = 0;
+			recalcLayout(false);
+			if (hash === 'end') {
+				currentPage = totalPages - 1;
+				renderPagePosition();
+			} else if (hash.startsWith('hl=')) {
+				jumpToHighlightInDom(hash.slice(3));
+			}
+		} else {
+			if (hash.startsWith('hl=')) {
+				jumpToHighlightInDom(hash.slice(3));
+			} else {
+				el.stage.scrollTop = 0;
+			}
+			updateScrollIndicator();
+		}
+	} catch {
+		window.location.href = fullUrl;
+	} finally {
+		navInFlight = false;
+	}
 }
 
 function nextPage() {
@@ -469,19 +540,26 @@ function bindEvents() {
 		if (sel && sel.toString().trim().length > 0) return;
 
 		closeNotePopover();
-		if (state.settings.mode === 'paginated') {
-			const xRatio = e.clientX / window.innerWidth;
-			if (xRatio < 0.25) {
-				prevPage();
-				return;
-			}
-			if (xRatio > 0.75) {
-				nextPage();
-				return;
-			}
-		}
 		document.body.classList.toggle('chrome-hidden');
 	});
+
+	// Top hover zone to reveal top-bar smoothly even when chrome is hidden
+	const topHoverZone = document.getElementById('top-hover-zone');
+	let topPeekTimer = null;
+	const showTopPeek = () => {
+		clearTimeout(topPeekTimer);
+		document.body.classList.add('chrome-peek-top');
+	};
+	const hideTopPeek = () => {
+		clearTimeout(topPeekTimer);
+		topPeekTimer = setTimeout(() => {
+			document.body.classList.remove('chrome-peek-top');
+		}, 180);
+	};
+	topHoverZone?.addEventListener('mouseenter', showTopPeek);
+	topHoverZone?.addEventListener('mouseleave', hideTopPeek);
+	el.topBar?.addEventListener('mouseenter', showTopPeek);
+	el.topBar?.addEventListener('mouseleave', hideTopPeek);
 
 	el.zonePrev.addEventListener('click', (e) => {
 		e.stopPropagation();
@@ -491,6 +569,28 @@ function bindEvents() {
 		e.stopPropagation();
 		nextPage();
 	});
+
+	// Mouse wheel pagination
+	let wheelLocked = false;
+	el.stage.addEventListener('wheel', (e) => {
+		if (state.settings.mode !== 'paginated' || e.ctrlKey) return;
+		if (!el.tocDrawer.classList.contains('hidden') ||
+			!el.notesDrawer.classList.contains('hidden') ||
+			!el.settingsDrawer.classList.contains('hidden') ||
+			!el.notePopover.classList.contains('hidden')) {
+			return;
+		}
+		const delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+		if (Math.abs(delta) < 10) return;
+		e.preventDefault();
+		if (wheelLocked) return;
+		wheelLocked = true;
+		if (delta > 0) nextPage();
+		else prevPage();
+		setTimeout(() => {
+			wheelLocked = false;
+		}, 220);
+	}, { passive: false });
 
 	el.stage.addEventListener('touchstart', (e) => {
 		if (e.touches.length !== 1) return;
@@ -729,15 +829,23 @@ function bindEvents() {
 	window.addEventListener('resize', () => {
 		recalcLayout(true);
 	});
+
+	// Intercept TOC links for seamless PJAX chapter switching
+	document.getElementById('toc-list')?.addEventListener('click', (e) => {
+		const link = e.target.closest('a.toc-item');
+		if (!link) return;
+		e.preventDefault();
+		closeAllDrawers();
+		navigateTo(link.getAttribute('href'));
+	});
+
+	window.addEventListener('popstate', () => {
+		const hash = location.hash.replace(/^#/, '');
+		navigateTo(location.pathname, hash, false);
+	});
 }
 
 function init() {
-	// If on index cover page and user has previous progress, auto-resume
-	if (currentChapterId === 'index' && state.progress.chapterUrl && state.progress.chapterId !== 'index') {
-		navigateTo(state.progress.chapterUrl);
-		return;
-	}
-
 	applySettings();
 	updateNotesBadge();
 	indexBlocks();

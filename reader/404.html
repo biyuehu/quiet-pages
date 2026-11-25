@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>404 · Lost Poem</title>
+	<link rel="stylesheet" href="styles/reader.css" />
+	<style>
+		.notfound-wrap {
+			min-height: 100vh;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			padding: 32px 24px;
+			text-align: center;
+			font-family: var(--font-serif);
+		}
+		.notfound-code {
+			font-size: clamp(4rem, 12vw, 6.5rem);
+			font-weight: 600;
+			line-height: 1;
+			margin: 0;
+			color: var(--accent);
+			letter-spacing: 0.04em;
+		}
+		.notfound-msg {
+			margin: 16px 0 28px;
+			font-size: 16px;
+			color: var(--text-muted);
+			line-height: 1.7;
+		}
+		.notfound-actions {
+			display: flex;
+			gap: 12px;
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+		.notfound-btn {
+			padding: 9px 18px;
+			border-radius: 8px;
+			font-size: 14px;
+			text-decoration: none;
+			border: 1px solid var(--border);
+			color: var(--text);
+			background: transparent;
+			transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+		}
+		.notfound-btn:hover {
+			color: var(--hover-text);
+			background: var(--hover-bg);
+			border-color: var(--accent);
+		}
+		.notfound-btn-primary {
+			background: var(--accent);
+			border-color: var(--accent);
+			color: #fff;
+		}
+		.notfound-btn-primary:hover {
+			color: #fff;
+			background: var(--hover-text);
+		}
+	</style>
+</head>
+<body data-theme="paper">
+	<main class="notfound-wrap">
+		<h1 class="notfound-code">404</h1>
+		<p class="notfound-msg">这一页似乎遗失在诗行之外了。</p>
+		<div class="notfound-actions">
+			<a class="notfound-btn notfound-btn-primary" href="index.html">回到阅读器</a>
+			<a class="notfound-btn" href="javascript:history.back()">返回上一页</a>
+		</div>
+	</main>
+	<script>
+		try {
+			const saved = JSON.parse(localStorage.getItem('lost-poem-reader:v1') || '{}');
+			if (saved.settings && saved.settings.theme) {
+				document.body.dataset.theme = saved.settings.theme;
+			}
+		} catch {}
+	</script>
+</body>
+</html>

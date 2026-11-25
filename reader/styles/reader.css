@@ -14,6 +14,10 @@
 	--text-muted: #78736a;
 	--border: rgba(38, 36, 32, 0.1);
 	--accent: #7c5c3e;
+	--hover-text: #5c3f24;
+	--hover-bg: rgba(124, 92, 62, 0.1);
+	--selection-bg: rgba(124, 92, 62, 0.22);
+	--selection-text: inherit;
 	--hl-amber: rgba(250, 204, 21, 0.36);
 	--hl-mint: rgba(52, 211, 153, 0.3);
 	--hl-rose: rgba(251, 113, 133, 0.3);
@@ -27,6 +31,9 @@ body[data-theme="sepia"] {
 	--text-muted: #7f6d57;
 	--border: rgba(58, 46, 33, 0.12);
 	--accent: #8c5a2b;
+	--hover-text: #683d16;
+	--hover-bg: rgba(140, 90, 43, 0.12);
+	--selection-bg: rgba(140, 90, 43, 0.24);
 }
 
 body[data-theme="sage"] {
@@ -36,6 +43,9 @@ body[data-theme="sage"] {
 	--text-muted: #5f7264;
 	--border: rgba(34, 48, 38, 0.12);
 	--accent: #3d6b4c;
+	--hover-text: #264d33;
+	--hover-bg: rgba(61, 107, 76, 0.12);
+	--selection-bg: rgba(61, 107, 76, 0.22);
 }
 
 body[data-theme="night"] {
@@ -45,6 +55,9 @@ body[data-theme="night"] {
 	--text-muted: #8a867e;
 	--border: rgba(255, 255, 255, 0.1);
 	--accent: #b89872;
+	--hover-text: #e2c5a0;
+	--hover-bg: rgba(184, 152, 114, 0.14);
+	--selection-bg: rgba(184, 152, 114, 0.32);
 	--hl-amber: rgba(234, 179, 8, 0.28);
 	--hl-mint: rgba(16, 185, 129, 0.24);
 	--hl-rose: rgba(244, 63, 94, 0.26);
@@ -53,6 +66,11 @@ body[data-theme="night"] {
 
 * {
 	box-sizing: border-box;
+}
+
+::selection {
+	background: var(--selection-bg);
+	color: var(--selection-text);
 }
 
 html,
@@ -108,10 +126,28 @@ body.chrome-hidden #top-bar {
 	pointer-events: none;
 }
 
+body.chrome-hidden.chrome-peek-top #top-bar {
+	transform: translateY(0);
+	opacity: 1;
+	pointer-events: auto;
+}
+
 body.chrome-hidden #bottom-bar {
 	transform: translateY(100%);
 	opacity: 0;
 	pointer-events: none;
+}
+
+.hover-zone {
+	position: fixed;
+	left: 0;
+	right: 0;
+	z-index: 19;
+}
+
+.hover-zone-top {
+	top: 0;
+	height: 36px;
 }
 
 .bar-left,
@@ -130,6 +166,20 @@ body.chrome-hidden #bottom-bar {
 	text-overflow: ellipsis;
 }
 
+.header-home-link {
+	color: var(--text);
+	text-decoration: none;
+	font-weight: 500;
+	padding: 4px 6px;
+	border-radius: 6px;
+	transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.header-home-link:hover {
+	color: var(--hover-text);
+	background: var(--hover-bg);
+}
+
 .icon-btn {
 	display: inline-flex;
 	align-items: center;
@@ -144,7 +194,8 @@ body.chrome-hidden #bottom-bar {
 }
 
 .icon-btn:hover {
-	background: var(--border);
+	background: var(--hover-bg);
+	color: var(--hover-text);
 }
 
 .badge {
@@ -174,6 +225,12 @@ body.chrome-hidden #bottom-bar {
 .nav-chap-btn:disabled {
 	opacity: 0.35;
 	cursor: not-allowed;
+}
+
+.nav-chap-btn:hover:not(:disabled) {
+	background: var(--hover-bg);
+	color: var(--hover-text);
+	border-color: var(--accent);
 }
 
 .progress-wrap {
@@ -331,7 +388,8 @@ body[data-mode="scroll"] .page-arrow {
 
 .page-arrow:hover {
 	opacity: 1 !important;
-	background: var(--border);
+	background: var(--hover-bg);
+	color: var(--hover-text);
 }
 
 .page-arrow-prev {
@@ -409,7 +467,8 @@ mark.hl.has-note {
 }
 
 .toolbar-btn:hover {
-	background: var(--border);
+	background: var(--hover-bg);
+	color: var(--hover-text);
 }
 
 /* Note Popover */
@@ -520,6 +579,20 @@ mark.hl.has-note {
 	font-weight: 600;
 }
 
+.drawer-home-link {
+	color: inherit;
+	text-decoration: none;
+	border-radius: 6px;
+	padding: 2px 6px;
+	margin-left: -6px;
+	transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.drawer-home-link:hover {
+	color: var(--hover-text);
+	background: var(--hover-bg);
+}
+
 .drawer-sub {
 	margin: 2px 0 0;
 	font-size: 12px;
@@ -559,7 +632,8 @@ mark.hl.has-note {
 }
 
 .toc-item:hover {
-	background: var(--border);
+	background: var(--hover-bg);
+	color: var(--hover-text);
 }
 
 .toc-item.active {
@@ -712,6 +786,25 @@ mark.hl.has-note {
 	border: 1px solid var(--border);
 	background: transparent;
 	color: var(--text);
+}
+
+.btn-ghost:hover,
+.btn-small:hover,
+.drawer-close:hover,
+.segmented button:hover:not(.active),
+.theme-chip:hover:not(.active) {
+	background: var(--hover-bg);
+	color: var(--hover-text);
+}
+
+.chapter-content a {
+	color: var(--accent);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.chapter-content a:hover {
+	color: var(--hover-text);
 }
 
 .file-label {

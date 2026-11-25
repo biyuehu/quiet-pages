@@ -8,6 +8,9 @@
 </head>
 <body data-theme="paper" data-mode="paginated">
 	<div id="app">
+		<!-- Top Hover Trigger -->
+		<div id="top-hover-zone" class="hover-zone hover-zone-top"></div>
+
 		<!-- Top Chrome -->
 		<header id="top-bar" class="chrome-bar">
 			<div class="bar-left">
@@ -17,7 +20,9 @@
 					</svg>
 					<span class="btn-label">目录</span>
 				</button>
-				<span id="header-chapter" class="header-chapter">$site_title$$if(title)$ · $title$$endif$</span>
+				<span id="header-chapter" class="header-chapter">
+					<a class="header-home-link" href="index.html?cover=1" title="返回封面">$site_title$</a>$if(title)$ · $title$$endif$
+				</span>
 			</div>
 			<div class="bar-right">
 				<button id="btn-notes" class="icon-btn" title="划线与笔记 (N)" aria-label="笔记">
@@ -100,7 +105,7 @@
 		<aside id="toc-drawer" class="drawer drawer-left hidden" aria-label="目录">
 			<div class="drawer-header">
 				<div>
-					<h2 class="drawer-title">$site_title$</h2>
+					<h2 class="drawer-title"><a class="drawer-home-link" href="index.html?cover=1" title="返回封面">$site_title$</a></h2>
 					<p id="toc-meta" class="drawer-sub">目录</p>
 				</div>
 				<button class="drawer-close" data-close="toc-drawer" aria-label="关闭">✕</button>
