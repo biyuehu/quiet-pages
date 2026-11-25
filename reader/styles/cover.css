@@ -1,0 +1,231 @@
+html,
+body {
+	height: auto;
+	min-height: 100%;
+	overflow-y: auto;
+}
+
+.cover-page {
+	min-height: 100vh;
+	max-width: 760px;
+	margin: 0 auto;
+	padding: 64px 28px 72px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	font-family: var(--font-serif);
+}
+
+.cover-hero {
+	padding: 40px 36px;
+	border: 1px solid var(--border);
+	border-radius: 16px;
+	background: var(--bg-elevated);
+	box-shadow: 0 12px 36px rgba(0, 0, 0, 0.05);
+}
+
+.cover-top-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	flex-wrap: wrap;
+	margin-bottom: 14px;
+}
+
+.cover-kicker {
+	font-family: var(--font-sans);
+	font-size: 12px;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	color: var(--accent);
+	margin: 0;
+}
+
+.cover-status {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 3px 10px;
+	border-radius: 999px;
+	border: 1px solid var(--border);
+	background: var(--hover-bg);
+	color: var(--accent);
+	font-family: var(--font-sans);
+	font-size: 12px;
+}
+
+.cover-status-dot {
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--accent);
+}
+
+.cover-title {
+	font-family: "Great Vibes", "Snell Roundhand", "Segoe Script", "Apple Chancery", "Brush Script MT", cursive;
+	font-size: clamp(3rem, 7.5vw, 4.4rem);
+	font-weight: 400;
+	line-height: 1.25;
+	margin: 0 0 14px;
+	padding: 0 4px;
+	letter-spacing: 0.02em;
+	background: linear-gradient(135deg, var(--text) 25%, var(--accent) 100%);
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+.cover-ornament {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0 0 18px;
+	color: var(--accent);
+	font-size: 12px;
+	opacity: 0.75;
+}
+
+.cover-ornament::before {
+	content: "";
+	width: 36px;
+	height: 1px;
+	background: var(--accent);
+}
+
+.cover-sub {
+	margin: 0 0 24px;
+	font-size: 15px;
+	color: var(--text-muted);
+	line-height: 1.8;
+}
+
+.cover-stats {
+	display: flex;
+	gap: 20px;
+	flex-wrap: wrap;
+	font-family: var(--font-sans);
+	font-size: 13px;
+	color: var(--text-muted);
+	margin-bottom: 28px;
+	padding-bottom: 24px;
+	border-bottom: 1px solid var(--border);
+}
+
+.cover-actions {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.cover-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 20px;
+	border-radius: 8px;
+	font-family: var(--font-sans);
+	font-size: 14px;
+	text-decoration: none;
+	border: 1px solid var(--border);
+	color: var(--text);
+	background: transparent;
+	transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.cover-btn:hover {
+	color: var(--hover-text);
+	background: var(--hover-bg);
+	border-color: var(--accent);
+}
+
+.cover-btn-primary {
+	background: var(--accent);
+	border-color: var(--accent);
+	color: #fff;
+}
+
+.cover-btn-primary:hover {
+	color: #fff;
+	background: var(--hover-text);
+}
+
+.cover-toc {
+	margin-top: 32px;
+}
+
+.cover-toc-title {
+	font-family: var(--font-sans);
+	font-size: 13px;
+	color: var(--text-muted);
+	letter-spacing: 0.08em;
+	margin: 0 0 14px 4px;
+}
+
+.cover-group {
+	margin-bottom: 20px;
+}
+
+.cover-group-head {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0 0 10px 4px;
+	font-family: var(--font-sans);
+}
+
+.cover-group-tag {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 24px;
+	height: 24px;
+	padding: 0 8px;
+	border-radius: 6px;
+	background: var(--hover-bg);
+	color: var(--accent);
+	font-size: 13px;
+	font-weight: 600;
+}
+
+.cover-group-count {
+	font-size: 12px;
+	color: var(--text-muted);
+}
+
+.cover-chap-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+	gap: 10px;
+}
+
+.cover-chap-item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 11px 14px;
+	border: 1px solid var(--border);
+	border-radius: 10px;
+	background: var(--bg-elevated);
+	color: var(--text);
+	text-decoration: none;
+	font-family: var(--font-sans);
+	font-size: 14px;
+	transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.cover-chap-item:hover {
+	color: var(--hover-text);
+	background: var(--hover-bg);
+	border-color: var(--accent);
+}
+
+.cover-chap-title {
+	flex: 1;
+	font-weight: 500;
+}
+
+.cover-chap-chars {
+	font-size: 12px;
+	color: var(--text-muted);
+}

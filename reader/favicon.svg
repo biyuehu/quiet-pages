@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+	<style>
+		.bg { fill: #faf9f6; stroke: #7c5c3e; }
+		.ink { stroke: #7c5c3e; fill: none; }
+		.accent { fill: #7c5c3e; }
+		@media (prefers-color-scheme: dark) {
+			.bg { fill: #1c1d20; stroke: #b89872; }
+			.ink { stroke: #b89872; }
+			.accent { fill: #b89872; }
+		}
+	</style>
+	<rect class="bg" x="4" y="4" width="56" height="56" rx="14" stroke-width="2.5" />
+	<!-- Open book pages -->
+	<path class="ink" d="M16 22c6-2.5 12-1.5 16 2 4-3.5 10-4.5 16-2v22c-6-2.5-12-1.5-16 2-4-3.5-10-4.5-16-2V22Z" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+	<path class="ink" d="M32 24v22" stroke-width="2.2" stroke-linecap="round" />
+	<!-- Poetic raindrop / star accent -->
+	<path class="accent" d="M32 11.5c1.8 2.8 3.2 4.6 3.2 6.2a3.2 3.2 0 1 1-6.4 0c0-1.6 1.4-3.4 3.2-6.2Z" />
+</svg>

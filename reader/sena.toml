@@ -4,6 +4,7 @@ keywords = "Lost Poem,小说,电子书阅读器"
 authors = ["Quiet Pages"]
 language = "zh"
 languages = ["zh"]
+favicon = "favicon.svg"
 src = "./content"
 dest = "./dist"
 base-url = "/"
@@ -21,6 +22,7 @@ assets = [
   "scripts/**/*",
   "index.html",
   "404.html",
+  "favicon.svg",
 ]
 preprocessors = []
 transformers = []
