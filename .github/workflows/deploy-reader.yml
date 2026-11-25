@@ -29,14 +29,19 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "npm"
-          cache-dependency-path: reader/package-lock.json
 
-      - name: Install dependencies
-        working-directory: reader
-        run: npm install
+      - name: Setup MoonBit
+        shell: pwsh
+        run: |
+          Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+          irm https://cli.moonbitlang.com/install/powershell.ps1 | iex
+          "$env:USERPROFILE\.moon\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-      - name: Build static reader
+      - name: Install MoPress
+        shell: pwsh
+        run: moon install himeno/mopress
+
+      - name: Build MoPress Book reader
         working-directory: reader
         run: npm run build
 

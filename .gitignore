@@ -4,3 +4,6 @@ test
 fiction/lost-poem/raw/
 reader/node_modules/
 reader/dist/
+reader/content/
+reader-old/node_modules/
+reader-old/dist/
