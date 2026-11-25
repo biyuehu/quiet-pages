@@ -7,12 +7,16 @@ const DEFAULT_STATE = {
 		font: 'serif',
 		fontSize: 18,
 		lineHeight: 1.85,
-		pageWidth: 680
+		pageWidth: 680,
+		hlShape: 'marker',
+		hlColor: 'amber'
 	},
 	progress: {
 		chapterId: null,
+		chapterUrl: null,
 		pageRatio: 0,
-		scrollRatio: 0
+		scrollRatio: 0,
+		isCover: true
 	},
 	highlights: []
 };
@@ -164,6 +168,7 @@ function renderPagePosition() {
 		state.progress.chapterId = currentChapterId;
 		state.progress.chapterUrl = pageMeta.currentUrl;
 		state.progress.pageRatio = totalPages > 1 ? currentPage / (totalPages - 1) : 0;
+		state.progress.isCover = false;
 		saveState();
 	}
 }
@@ -178,6 +183,7 @@ function updateScrollIndicator() {
 	state.progress.chapterId = currentChapterId;
 	state.progress.chapterUrl = pageMeta.currentUrl;
 	state.progress.scrollRatio = ratio;
+	state.progress.isCover = false;
 	saveState();
 }
 
@@ -353,7 +359,9 @@ function wrapRangeInBlock(blockEl, startOff, endOff, hl) {
 		r.setStart(seg.node, seg.localStart);
 		r.setEnd(seg.node, seg.localEnd);
 		const mark = document.createElement('mark');
-		mark.className = `hl hl-${hl.color}${hl.note ? ' has-note' : ''}`;
+		const color = hl.color || 'amber';
+		const shape = hl.shape || 'marker';
+		mark.className = `hl hl-${color} hl-shape-${shape}${hl.note ? ' has-note' : ''}`;
 		mark.dataset.hlId = hl.id;
 		try {
 			r.surroundContents(mark);
@@ -400,10 +408,13 @@ function jumpToHighlightInDom(hlId) {
 	}
 }
 
-function createHighlight(color, openNote = false) {
+function createHighlight(color, openNote = false, shape = state.settings.hlShape || 'marker') {
 	if (!pendingRange) return;
 	const serialized = serializeRange(pendingRange);
 	if (!serialized) return;
+
+	state.settings.hlColor = color;
+	state.settings.hlShape = shape;
 
 	const hl = {
 		id: `hl_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
@@ -411,6 +422,7 @@ function createHighlight(color, openNote = false) {
 		chapterUrl: pageMeta.currentUrl,
 		chapterTitle: pageMeta.chapterTitle,
 		color,
+		shape,
 		note: '',
 		createdAt: new Date().toISOString(),
 		...serialized
@@ -445,12 +457,31 @@ function positionPopup(popup, rect) {
 	popup.style.top = `${top}px`;
 }
 
+function syncToolbarShapeUI() {
+	const activeShape = state.settings.hlShape || 'marker';
+	el.selToolbar.querySelectorAll('.shape-btn').forEach((btn) => {
+		btn.classList.toggle('active', btn.dataset.shape === activeShape);
+	});
+}
+
+function syncPopoverUI(hl) {
+	const color = hl.color || 'amber';
+	const shape = hl.shape || 'marker';
+	el.notePopover.querySelectorAll('.hl-dot').forEach((btn) => {
+		btn.classList.toggle('active', btn.dataset.color === color);
+	});
+	el.notePopover.querySelectorAll('.shape-btn').forEach((btn) => {
+		btn.classList.toggle('active', btn.dataset.shape === shape);
+	});
+}
+
 function openNotePopover(hlId, anchorEl) {
 	const hl = state.highlights.find((h) => h.id === hlId);
 	if (!hl) return;
 	activeHighlightId = hlId;
 	el.popoverQuote.textContent = hl.quote;
 	el.popoverTextarea.value = hl.note || '';
+	syncPopoverUI(hl);
 	positionPopup(el.notePopover, anchorEl.getBoundingClientRect());
 }
 
@@ -628,8 +659,18 @@ function bindEvents() {
 				return;
 			}
 			pendingRange = range.cloneRange();
+			syncToolbarShapeUI();
 			positionPopup(el.selToolbar, range.getBoundingClientRect());
 		}, 10);
+	});
+
+	el.selToolbar.querySelectorAll('.shape-btn').forEach((btn) => {
+		btn.addEventListener('click', (e) => {
+			e.stopPropagation();
+			state.settings.hlShape = btn.dataset.shape;
+			saveState();
+			syncToolbarShapeUI();
+		});
 	});
 
 	el.selToolbar.querySelectorAll('.hl-dot').forEach((btn) => {
@@ -641,7 +682,7 @@ function bindEvents() {
 
 	document.getElementById('btn-sel-note').addEventListener('click', (e) => {
 		e.stopPropagation();
-		createHighlight('amber', true);
+		createHighlight(state.settings.hlColor || 'amber', true);
 	});
 
 	document.getElementById('btn-sel-copy').addEventListener('click', async (e) => {
@@ -666,6 +707,18 @@ function bindEvents() {
 			if (!hl) return;
 			hl.color = btn.dataset.color;
 			saveState();
+			syncPopoverUI(hl);
+			applyChapterHighlights();
+		});
+	});
+
+	el.notePopover.querySelectorAll('.shape-btn').forEach((btn) => {
+		btn.addEventListener('click', () => {
+			const hl = state.highlights.find((h) => h.id === activeHighlightId);
+			if (!hl) return;
+			hl.shape = btn.dataset.shape;
+			saveState();
+			syncPopoverUI(hl);
 			applyChapterHighlights();
 		});
 	});
@@ -703,6 +756,20 @@ function bindEvents() {
 
 	el.btnPrevChap.addEventListener('click', () => navigateTo(pageMeta.prevUrl));
 	el.btnNextChap.addEventListener('click', () => navigateTo(pageMeta.nextUrl));
+
+	const progressPopover = document.getElementById('progress-popover');
+	el.pageIndicator.addEventListener('click', (e) => {
+		e.stopPropagation();
+		const isHidden = progressPopover.classList.toggle('hidden');
+		el.pageIndicator.classList.toggle('active', !isHidden);
+	});
+	progressPopover?.addEventListener('click', (e) => e.stopPropagation());
+	document.addEventListener('click', (e) => {
+		if (!e.target.closest('.progress-wrap')) {
+			progressPopover?.classList.add('hidden');
+			el.pageIndicator.classList.remove('active');
+		}
+	});
 
 	el.pageSlider.addEventListener('input', (e) => {
 		const val = Number(e.target.value);
@@ -828,6 +895,14 @@ function bindEvents() {
 
 	window.addEventListener('resize', () => {
 		recalcLayout(true);
+	});
+
+	// Mark isCover=true when user explicitly clicks back to cover (delegated for PJAX)
+	document.addEventListener('click', (e) => {
+		if (e.target.closest('.header-home-link, .drawer-home-link')) {
+			state.progress.isCover = true;
+			saveState();
+		}
 	});
 
 	// Intercept TOC links for seamless PJAX chapter switching

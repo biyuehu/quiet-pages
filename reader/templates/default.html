@@ -4,6 +4,7 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<title>$if(title)$$title$ · $site_title$$else$$site_title$$endif$</title>
+	<link rel="icon" href="favicon.svg" type="image/svg+xml" />
 	<link rel="stylesheet" href="styles/reader.css" />
 </head>
 <body data-theme="paper" data-mode="paginated">
@@ -21,7 +22,7 @@
 					<span class="btn-label">目录</span>
 				</button>
 				<span id="header-chapter" class="header-chapter">
-					<a class="header-home-link" href="index.html?cover=1" title="返回封面">$site_title$</a>$if(title)$ · $title$$endif$
+					<a class="header-home-link" href="index.html" title="返回封面">$site_title$</a>$if(title)$ · $title$$endif$
 				</span>
 			</div>
 			<div class="bar-right">
@@ -62,14 +63,23 @@
 		<footer id="bottom-bar" class="chrome-bar">
 			<button id="btn-prev-chap" class="nav-chap-btn" title="上一章" $if(!prev)$disabled$endif$>← 上一章</button>
 			<div class="progress-wrap">
-				<span id="page-indicator" class="page-indicator">1 / 1</span>
-				<input id="page-slider" type="range" min="1" max="1" value="1" aria-label="页码进度" />
+				<button id="page-indicator" class="page-indicator-btn" title="点击拖动进度">1 / 1</button>
+				<div id="progress-popover" class="progress-popover hidden" role="dialog" aria-label="阅读进度">
+					<input id="page-slider" type="range" min="1" max="1" value="1" aria-label="页码进度" />
+				</div>
 			</div>
 			<button id="btn-next-chap" class="nav-chap-btn" title="下一章" $if(!next)$disabled$endif$>下一章 →</button>
 		</footer>
 
 		<!-- Selection Floating Toolbar -->
 		<div id="selection-toolbar" class="floating-toolbar hidden" role="toolbar" aria-label="划线工具">
+			<div class="toolbar-shapes">
+				<button class="shape-btn" data-shape="marker" title="涂鸦高亮">涂鸦</button>
+				<button class="shape-btn" data-shape="underline" title="下划线"><u>划线</u></button>
+				<button class="shape-btn" data-shape="bold" title="粗体"><b>粗</b></button>
+				<button class="shape-btn" data-shape="italic" title="斜体"><i>斜</i></button>
+			</div>
+			<span class="toolbar-sep"></span>
 			<button class="hl-dot hl-dot-amber" data-color="amber" title="琥珀黄"></button>
 			<button class="hl-dot hl-dot-mint" data-color="mint" title="青瓷绿"></button>
 			<button class="hl-dot hl-dot-rose" data-color="rose" title="绯红"></button>
@@ -90,6 +100,12 @@
 				</div>
 				<button id="btn-hl-delete" class="popover-del-btn" title="删除划线">删除</button>
 			</div>
+			<div class="popover-shapes">
+				<button class="shape-btn" data-shape="marker" title="涂鸦高亮">涂鸦</button>
+				<button class="shape-btn" data-shape="underline" title="下划线"><u>划线</u></button>
+				<button class="shape-btn" data-shape="bold" title="粗体"><b>粗体</b></button>
+				<button class="shape-btn" data-shape="italic" title="斜体"><i>斜体</i></button>
+			</div>
 			<blockquote id="popover-quote" class="popover-quote"></blockquote>
 			<textarea id="popover-textarea" class="popover-textarea" rows="3" placeholder="写下想法或批注…"></textarea>
 			<div class="popover-actions">
@@ -105,7 +121,7 @@
 		<aside id="toc-drawer" class="drawer drawer-left hidden" aria-label="目录">
 			<div class="drawer-header">
 				<div>
-					<h2 class="drawer-title"><a class="drawer-home-link" href="index.html?cover=1" title="返回封面">$site_title$</a></h2>
+					<h2 class="drawer-title"><a class="drawer-home-link" href="index.html" title="返回封面">$site_title$</a></h2>
 					<p id="toc-meta" class="drawer-sub">目录</p>
 				</div>
 				<button class="drawer-close" data-close="toc-drawer" aria-label="关闭">✕</button>

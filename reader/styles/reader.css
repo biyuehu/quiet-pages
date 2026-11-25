@@ -234,25 +234,53 @@ body.chrome-hidden #bottom-bar {
 }
 
 .progress-wrap {
-	flex: 1;
+	position: relative;
 	display: flex;
 	align-items: center;
-	gap: 12px;
-	max-width: 480px;
+	justify-content: center;
 }
 
-.page-indicator {
-	font-size: 12px;
+.page-indicator-btn {
+	border: 1px solid transparent;
+	border-radius: 999px;
+	background: transparent;
 	color: var(--text-muted);
-	min-width: 56px;
-	text-align: right;
+	font-size: 12px;
+	padding: 4px 12px;
+	cursor: pointer;
 	font-variant-numeric: tabular-nums;
+	transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.page-indicator-btn:hover,
+.page-indicator-btn.active {
+	color: var(--hover-text);
+	background: var(--hover-bg);
+	border-color: var(--border);
+}
+
+.progress-popover {
+	position: absolute;
+	bottom: calc(100% + 14px);
+	left: 50%;
+	transform: translateX(-50%);
+	width: 260px;
+	max-width: calc(100vw - 32px);
+	padding: 12px 16px;
+	border-radius: 12px;
+	background: var(--bg-elevated);
+	border: 1px solid var(--border);
+	box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+	z-index: 30;
+	display: flex;
+	align-items: center;
 }
 
 #page-slider {
-	flex: 1;
+	width: 100%;
 	accent-color: var(--accent);
 	cursor: pointer;
+	margin: 0;
 }
 
 /* Reading Stage */
@@ -400,26 +428,53 @@ body[data-mode="scroll"] .page-arrow {
 	right: 12px;
 }
 
-/* Highlights */
+/* Highlights (orthogonal color + shape) */
 mark.hl {
 	color: inherit;
+	background: transparent;
 	border-radius: 2px;
-	padding: 0.06em 0;
+	padding: 0.04em 0;
 	cursor: pointer;
 	transition: filter 0.15s ease;
 }
 
 mark.hl:hover {
-	filter: brightness(0.95);
+	filter: brightness(0.92);
 }
 
-mark.hl-amber { background: var(--hl-amber); }
-mark.hl-mint { background: var(--hl-mint); }
-mark.hl-rose { background: var(--hl-rose); }
-mark.hl-sky { background: var(--hl-sky); }
+mark.hl-amber { --mark-bg: var(--hl-amber); --mark-ink: #b45309; }
+mark.hl-mint { --mark-bg: var(--hl-mint); --mark-ink: #047857; }
+mark.hl-rose { --mark-bg: var(--hl-rose); --mark-ink: #be123c; }
+mark.hl-sky { --mark-bg: var(--hl-sky); --mark-ink: #0369a1; }
 
-mark.hl.has-note {
-	border-bottom: 2px solid var(--accent);
+body[data-theme="night"] mark.hl-amber { --mark-ink: #fbbf24; }
+body[data-theme="night"] mark.hl-mint { --mark-ink: #34d399; }
+body[data-theme="night"] mark.hl-rose { --mark-ink: #fb7185; }
+body[data-theme="night"] mark.hl-sky { --mark-ink: #38bdf8; }
+
+mark.hl-shape-marker {
+	background: var(--mark-bg);
+}
+
+mark.hl-shape-underline {
+	text-decoration: underline;
+	text-decoration-color: var(--mark-ink);
+	text-decoration-thickness: 2px;
+	text-underline-offset: 4px;
+}
+
+mark.hl-shape-bold {
+	font-weight: 700;
+	color: var(--mark-ink);
+}
+
+mark.hl-shape-italic {
+	font-style: italic;
+	color: var(--mark-ink);
+}
+
+mark.hl.has-note:not(.hl-shape-underline) {
+	border-bottom: 1.5px dotted var(--mark-ink);
 }
 
 /* Floating Selection Toolbar */
@@ -428,21 +483,63 @@ mark.hl.has-note {
 	z-index: 40;
 	display: flex;
 	align-items: center;
-	gap: 8px;
+	gap: 7px;
 	padding: 6px 10px;
 	border-radius: 999px;
 	background: var(--bg-elevated);
 	border: 1px solid var(--border);
 	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+	max-width: calc(100vw - 24px);
+	flex-wrap: wrap;
+}
+
+.toolbar-shapes,
+.popover-shapes {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.popover-shapes {
+	margin-bottom: 8px;
+}
+
+.shape-btn {
+	border: 1px solid transparent;
+	background: transparent;
+	color: var(--text-muted);
+	font-size: 12px;
+	padding: 3px 7px;
+	border-radius: 6px;
+	cursor: pointer;
+	line-height: 1.2;
+}
+
+.shape-btn:hover {
+	color: var(--hover-text);
+	background: var(--hover-bg);
+}
+
+.shape-btn.active {
+	color: var(--accent);
+	background: var(--hover-bg);
+	border-color: var(--accent);
+	font-weight: 600;
 }
 
 .hl-dot {
 	width: 18px;
 	height: 18px;
 	border-radius: 50%;
-	border: 1px solid rgba(0, 0, 0, 0.15);
+	border: 1.5px solid rgba(0, 0, 0, 0.15);
 	cursor: pointer;
 	padding: 0;
+	transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.hl-dot.active {
+	transform: scale(1.12);
+	box-shadow: 0 0 0 2px var(--bg-elevated), 0 0 0 3.5px var(--accent);
 }
 
 .hl-dot-amber { background: #facc15; }
