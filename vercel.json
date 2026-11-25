@@ -1,7 +1,7 @@
 {
 	"$schema": "https://openapi.vercel.sh/vercel.json",
 	"installCommand": "curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash && $HOME/.moon/bin/moon install himeno/mopress",
-	"buildCommand": "export PATH=\"$HOME/.moon/bin:/nodejs22/bin:/nodejs20/bin:$PATH\" && if ! command -v node >/dev/null 2>&1; then curl -fsSL https://bun.sh/install | bash && export PATH=\"$HOME/.bun/bin:$PATH\"; fi && cd reader && (node prepare.mjs 2>/dev/null || bun prepare.mjs) && mopress build",
+	"buildCommand": "bash reader/vercel-build.sh",
 	"outputDirectory": "reader/dist",
 	"ignoreCommand": "git diff --quiet HEAD^ HEAD -- fiction/lost-poem reader vercel.json"
 }
