@@ -157,6 +157,15 @@ async function prepare() {
 			<h2 class="cover-toc-title">章节目录</h2>
 			${chapterGroupsHtml}
 		</section>
+
+		<footer class="cover-footer">
+			<span>© 2026 Quiet Pages · Lost Poem</span>
+			<span class="cover-footer-links">
+				<a href="https://github.com/biyuehu/quiet-pages" target="_blank" rel="noopener">GitHub</a>
+				<span aria-hidden="true">·</span>
+				<a href="https://mo.himeno-sena.com/" target="_blank" rel="noopener">Powered by MoPress</a>
+			</span>
+		</footer>
 	</main>
 	<script src="scripts/cover.js"></script>
 </body>
