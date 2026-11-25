@@ -2,3 +2,5 @@ cedict_ts.u8
 node_modules/
 test
 fiction/lost-poem/raw/
+reader/node_modules/
+reader/dist/

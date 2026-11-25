@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<title>Lost Poem · 阅读器</title>
+	<link rel="stylesheet" href="styles.css" />
+</head>
+<body data-theme="paper" data-mode="paginated">
+	<div id="app">
+		<!-- Top Chrome -->
+		<header id="top-bar" class="chrome-bar">
+			<div class="bar-left">
+				<button id="btn-toc" class="icon-btn" title="目录 (M)" aria-label="目录">
+					<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8">
+						<path d="M4 6h16M4 12h16M4 18h10" stroke-linecap="round" />
+					</svg>
+					<span class="btn-label">目录</span>
+				</button>
+				<span id="header-chapter" class="header-chapter">Lost Poem</span>
+			</div>
+			<div class="bar-right">
+				<button id="btn-notes" class="icon-btn" title="划线与笔记 (N)" aria-label="笔记">
+					<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8">
+						<path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" stroke-linecap="round" stroke-linejoin="round" />
+					</svg>
+					<span class="btn-label">笔记</span>
+					<span id="notes-badge" class="badge hidden">0</span>
+				</button>
+				<button id="btn-settings" class="icon-btn" title="阅读设置 (S)" aria-label="设置">
+					<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8">
+						<circle cx="12" cy="12" r="3" />
+						<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.77 1.02 1.42 1.09H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" />
+					</svg>
+					<span class="btn-label">排版</span>
+				</button>
+			</div>
+		</header>
+
+		<!-- Main Reading Stage -->
+		<main id="reader-stage">
+			<div id="reader-viewport">
+				<div id="reader-columns">
+					<article id="chapter-content" class="chapter-content">
+						<p class="loading-hint">正在载入…</p>
+					</article>
+				</div>
+			</div>
+
+			<!-- Subtle Page Zones Hint (desktop hover arrows) -->
+			<button id="zone-prev" class="page-arrow page-arrow-prev" aria-label="上一页" title="上一页 (←)">‹</button>
+			<button id="zone-next" class="page-arrow page-arrow-next" aria-label="下一页" title="下一页 (→)">›</button>
+		</main>
+
+		<!-- Bottom Chrome -->
+		<footer id="bottom-bar" class="chrome-bar">
+			<button id="btn-prev-chap" class="nav-chap-btn" title="上一章">← 上一章</button>
+			<div class="progress-wrap">
+				<span id="page-indicator" class="page-indicator">1 / 1</span>
+				<input id="page-slider" type="range" min="1" max="1" value="1" aria-label="页码进度" />
+			</div>
+			<button id="btn-next-chap" class="nav-chap-btn" title="下一章">下一章 →</button>
+		</footer>
+
+		<!-- Selection Floating Toolbar -->
+		<div id="selection-toolbar" class="floating-toolbar hidden" role="toolbar" aria-label="划线工具">
+			<button class="hl-dot hl-dot-amber" data-color="amber" title="琥珀黄"></button>
+			<button class="hl-dot hl-dot-mint" data-color="mint" title="青瓷绿"></button>
+			<button class="hl-dot hl-dot-rose" data-color="rose" title="绯红"></button>
+			<button class="hl-dot hl-dot-sky" data-color="sky" title="晴空蓝"></button>
+			<span class="toolbar-sep"></span>
+			<button id="btn-sel-note" class="toolbar-btn">写笔记</button>
+			<button id="btn-sel-copy" class="toolbar-btn">复制</button>
+		</div>
+
+		<!-- Highlight / Note Popover -->
+		<div id="note-popover" class="note-popover hidden" role="dialog" aria-label="笔记详情">
+			<div class="popover-head">
+				<div class="popover-colors">
+					<button class="hl-dot hl-dot-amber" data-color="amber" title="琥珀黄"></button>
+					<button class="hl-dot hl-dot-mint" data-color="mint" title="青瓷绿"></button>
+					<button class="hl-dot hl-dot-rose" data-color="rose" title="绯红"></button>
+					<button class="hl-dot hl-dot-sky" data-color="sky" title="晴空蓝"></button>
+				</div>
+				<button id="btn-hl-delete" class="popover-del-btn" title="删除划线">删除</button>
+			</div>
+			<blockquote id="popover-quote" class="popover-quote"></blockquote>
+			<textarea id="popover-textarea" class="popover-textarea" rows="3" placeholder="写下想法或批注…"></textarea>
+			<div class="popover-actions">
+				<button id="btn-popover-close" class="btn-ghost">关闭</button>
+				<button id="btn-popover-save" class="btn-primary">保存</button>
+			</div>
+		</div>
+
+		<!-- Backdrop -->
+		<div id="drawer-backdrop" class="backdrop hidden"></div>
+
+		<!-- TOC Drawer -->
+		<aside id="toc-drawer" class="drawer drawer-left hidden" aria-label="目录">
+			<div class="drawer-header">
+				<div>
+					<h2 class="drawer-title">Lost Poem</h2>
+					<p id="toc-meta" class="drawer-sub">目录</p>
+				</div>
+				<button class="drawer-close" data-close="toc-drawer" aria-label="关闭">✕</button>
+			</div>
+			<nav id="toc-list" class="drawer-body toc-list"></nav>
+		</aside>
+
+		<!-- Notes & Highlights Drawer -->
+		<aside id="notes-drawer" class="drawer drawer-right hidden" aria-label="划线与笔记">
+			<div class="drawer-header">
+				<div>
+					<h2 class="drawer-title">划线与笔记</h2>
+					<p id="notes-meta" class="drawer-sub">本地存储于当前浏览器</p>
+				</div>
+				<button class="drawer-close" data-close="notes-drawer" aria-label="关闭">✕</button>
+			</div>
+			<div class="notes-tools">
+				<button id="btn-export-md" class="btn-small">导出 Markdown</button>
+				<button id="btn-export-json" class="btn-small">导出 JSON</button>
+				<label class="btn-small file-label">
+					导入 JSON
+					<input id="input-import-json" type="file" accept="application/json" hidden />
+				</label>
+			</div>
+			<div id="notes-list" class="drawer-body notes-list"></div>
+		</aside>
+
+		<!-- Settings Panel -->
+		<aside id="settings-drawer" class="drawer drawer-right hidden" aria-label="阅读设置">
+			<div class="drawer-header">
+				<h2 class="drawer-title">阅读排版</h2>
+				<button class="drawer-close" data-close="settings-drawer" aria-label="关闭">✕</button>
+			</div>
+			<div class="drawer-body settings-body">
+				<div class="setting-group">
+					<label class="setting-label">阅读模式</label>
+					<div class="segmented" id="seg-mode">
+						<button data-value="paginated" class="active">翻页模式</button>
+						<button data-value="scroll">滚动模式</button>
+					</div>
+				</div>
+
+				<div class="setting-group">
+					<label class="setting-label">纸张主题</label>
+					<div class="theme-grid" id="theme-grid">
+						<button class="theme-chip" data-theme="paper">纸白</button>
+						<button class="theme-chip" data-theme="sepia">羊皮纸</button>
+						<button class="theme-chip" data-theme="sage">护眼绿</button>
+						<button class="theme-chip" data-theme="night">夜间</button>
+					</div>
+				</div>
+
+				<div class="setting-group">
+					<label class="setting-label">字体</label>
+					<div class="segmented" id="seg-font">
+						<button data-value="serif" class="active">宋体 / 衬线</button>
+						<button data-value="sans">黑体 / 无衬线</button>
+					</div>
+				</div>
+
+				<div class="setting-group">
+					<div class="setting-row">
+						<label class="setting-label">字号</label>
+						<span id="val-font-size" class="setting-val">18px</span>
+					</div>
+					<input id="range-font-size" type="range" min="14" max="26" step="1" value="18" />
+				</div>
+
+				<div class="setting-group">
+					<div class="setting-row">
+						<label class="setting-label">行距</label>
+						<span id="val-line-height" class="setting-val">1.85</span>
+					</div>
+					<input id="range-line-height" type="range" min="1.4" max="2.4" step="0.05" value="1.85" />
+				</div>
+
+				<div class="setting-group">
+					<div class="setting-row">
+						<label class="setting-label">版心宽度</label>
+						<span id="val-page-width" class="setting-val">680px</span>
+					</div>
+					<input id="range-page-width" type="range" min="480" max="880" step="20" value="680" />
+				</div>
+
+				<div class="setting-tips">
+					<p>快捷键：<code>←</code> / <code>→</code> 或 <code>Space</code> 翻页，<code>M</code> 目录，<code>N</code> 笔记，<code>S</code> 排版。</p>
+				</div>
+			</div>
+		</aside>
+
+		<div id="toast" class="toast hidden"></div>
+	</div>
+
+	<script type="module" src="app.js"></script>
+</body>
+</html>
