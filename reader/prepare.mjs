@@ -30,6 +30,22 @@ function extractTitleAndBody(rawMarkdown, fallbackId) {
 	return { title, body: lines.slice(bodyStart).join("\n").trim() };
 }
 
+/**
+ * Strip common Markdown syntax and count visible non-whitespace characters.
+ */
+function countChars(markdown) {
+	const plain = markdown
+		.replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1")
+		.replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+		.replace(/```[\s\S]*?```/g, (m) => m.replace(/```[^\n]*\n?|```/g, ""))
+		.replace(/`([^`]*)`/g, "$1")
+		.replace(/^\s*([-*_])(?:\s*\1){2,}\s*$/gm, "")
+		.replace(/^\s{0,3}(?:#{1,6}\s+|>\s*|[-*+]\s+|\d+\.\s+)/gm, "")
+		.replace(/[*_~]+/g, "")
+		.replace(/<[^>]+>/g, "");
+	return plain.replace(/\s+/g, "").length;
+}
+
 async function prepare() {
 	const chapterFiles = (await fs.readdir(SOURCE_DIR, { withFileTypes: true }))
 		.filter(
@@ -53,7 +69,7 @@ async function prepare() {
 			await fs.readFile(path.join(SOURCE_DIR, fileName), "utf8"),
 			id,
 		);
-		const charCount = body.replace(/\s+/g, "").length;
+		const charCount = countChars(body);
 
 		await fs.writeFile(
 			path.join(CONTENT_DIR, fileName),
