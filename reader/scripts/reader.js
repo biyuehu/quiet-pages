@@ -14,6 +14,7 @@ const DEFAULT_STATE = {
 	progress: {
 		chapterId: null,
 		chapterUrl: null,
+		pageIndex: 0,
 		pageRatio: 0,
 		scrollRatio: 0,
 		isCover: true
@@ -167,6 +168,7 @@ function renderPagePosition() {
 		el.pageSlider.value = String(currentPage + 1);
 		state.progress.chapterId = currentChapterId;
 		state.progress.chapterUrl = pageMeta.currentUrl;
+		state.progress.pageIndex = currentPage;
 		state.progress.pageRatio = totalPages > 1 ? currentPage / (totalPages - 1) : 0;
 		state.progress.isCover = false;
 		saveState();
@@ -921,6 +923,12 @@ function bindEvents() {
 }
 
 function init() {
+	// Snapshot saved progress before recalcLayout() overwrites it
+	const savedChapterId = state.progress.chapterId;
+	const savedPageIndex = state.progress.pageIndex || 0;
+	const savedPageRatio = state.progress.pageRatio || 0;
+	const savedScrollRatio = state.progress.scrollRatio || 0;
+
 	applySettings();
 	updateNotesBadge();
 	indexBlocks();
@@ -935,16 +943,19 @@ function init() {
 			renderPagePosition();
 		} else if (hash.startsWith('hl=')) {
 			jumpToHighlightInDom(hash.slice(3));
-		} else if (state.progress.chapterId === currentChapterId && state.progress.pageRatio > 0) {
-			currentPage = Math.min(totalPages - 1, Math.round(state.progress.pageRatio * (totalPages - 1)));
+		} else if (savedChapterId === currentChapterId && (savedPageIndex > 0 || savedPageRatio > 0)) {
+			const targetPage = savedPageRatio > 0
+				? Math.round(savedPageRatio * (totalPages - 1))
+				: savedPageIndex;
+			currentPage = Math.min(totalPages - 1, Math.max(0, targetPage));
 			renderPagePosition();
 		}
 	} else {
 		if (hash.startsWith('hl=')) {
 			jumpToHighlightInDom(hash.slice(3));
-		} else if (state.progress.chapterId === currentChapterId && state.progress.scrollRatio > 0) {
+		} else if (savedChapterId === currentChapterId && savedScrollRatio > 0) {
 			const maxScroll = Math.max(0, el.stage.scrollHeight - el.stage.clientHeight);
-			el.stage.scrollTop = maxScroll * state.progress.scrollRatio;
+			el.stage.scrollTop = maxScroll * savedScrollRatio;
 		}
 		updateScrollIndicator();
 	}

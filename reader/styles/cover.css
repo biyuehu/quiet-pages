@@ -63,7 +63,9 @@ body {
 }
 
 .cover-title {
-	font-family: "Great Vibes", "Snell Roundhand", "Segoe Script", "Apple Chancery", "Brush Script MT", cursive;
+	font-family:
+		"Snell Roundhand", "Segoe Script", "Apple Chancery", "Brush Script MT",
+		cursive;
 	font-size: clamp(3rem, 7.5vw, 4.4rem);
 	font-weight: 400;
 	line-height: 1.25;
@@ -130,7 +132,10 @@ body {
 	border: 1px solid var(--border);
 	color: var(--text);
 	background: transparent;
-	transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+	transition:
+		color 0.15s ease,
+		background-color 0.15s ease,
+		border-color 0.15s ease;
 }
 
 .cover-btn:hover {
@@ -211,7 +216,10 @@ body {
 	text-decoration: none;
 	font-family: var(--font-sans);
 	font-size: 14px;
-	transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+	transition:
+		color 0.15s ease,
+		background-color 0.15s ease,
+		border-color 0.15s ease;
 }
 
 .cover-chap-item:hover {
