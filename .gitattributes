@@ -3,7 +3,7 @@ README.md linguist-generated=false
 README.md linguist-documentation=false
 README.md linguist-detectable=true
 *.js linguist-detectable=false
-*.js linguist-vendored
+*.mjs linguist-detectable=false
 *.html linguist-detectable=false
 *.css linguist-detectable=false
 *.sh text eol=lf
